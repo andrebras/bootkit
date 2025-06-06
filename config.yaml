@@ -145,10 +145,6 @@ dotfiles:
   d_direnv:
     src: config/direnv
     dst: ~/.config/direnv
-  d_karabiner:
-    src: config/karabiner
-    dst: ~/.config/karabiner
-    chmod: '700'
   f_karabiner.json:
     src: config/karabiner/karabiner.json
     dst: ~/.config/karabiner/karabiner.json
@@ -159,9 +155,6 @@ dotfiles:
   f_1683049260.json:
     src: config/karabiner/assets/complex_modifications/1683049260.json
     dst: ~/.config/karabiner/assets/complex_modifications/1683049260.json
-  f_nix.conf:
-    src: config/nix/nix.conf
-    dst: ~/.config/nix/nix.conf
   d_lvim:
     src: config/lvim
     dst: ~/.config/lvim
@@ -202,10 +195,8 @@ profiles:
     - d_alacritty
     - d_alias
     - d_direnv
-    - d_karabiner
     - f_karabiner.json
     - f_1683048690.json
     - f_1683049260.json
-    - f_nix.conf
     - d_lvim
     - d_nvim
