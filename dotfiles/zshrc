@@ -1,0 +1,119 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+#
+# Locale
+#
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+#
+# Editor
+#
+export EDITOR='vim'
+export VISUAL='vim'
+export PAGER='less'
+
+#
+# Paths
+#
+
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath path
+
+# Set the the list of directories that cd searches.
+cdpath=(
+  /Users/andrebras/Lab
+  /Users/andrebras
+  /Volumes
+  $cdpath
+)
+
+# Set the list of directories that Zsh searches for programs.
+path=(
+  /usr/local/{bin,sbin}
+  $path
+)
+
+#
+# zgenom
+#
+
+# Load zgenom
+source "${HOME}/.zgenom/zgenom.zsh"
+
+# Check for plugin and zgenom updates every 7 days
+zgenom autoupdate
+
+# Create zgenom init script
+if ! zgenom saved; then
+  echo "Creating a zgenom save"
+
+  # prezto options
+  zgenom prezto '*' color 'yes'
+  zgenom prezto 'terminal:window-title' 'yes'
+  zgenom prezto prompt theme 'powerlevel10k'
+
+  zgenom prezto 'git:log:oneline' format '_git_log_oneline_format'
+  zgenom prezto 'git:log:brief'   format '_git_log_brief_format'
+  zgenom prezto 'ssh:load' identities 'id_rsa' 'id_github'
+
+  # prezto and modules
+  zgenom prezto
+  zgenom prezto autosuggestions
+  zgenom prezto command-not-found
+  zgenom prezto completion
+  zgenom prezto git
+  zgenom prezto gpg
+  zgenom prezto history-substring-search
+  zgenom prezto osx
+  zgenom prezto ruby
+  zgenom prezto ssh
+  zgenom prezto syntax-highlighting
+  zgenom prezto terminal
+  zgenom prezto utility
+
+  # create init script
+  zgenom save
+fi
+
+# Incremental search with ctr + r
+# bindkey '^R' history-incremental-search-backward
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Source all files inside zsh folder
+alias="$HOME/.config/alias"
+
+if [[ -a "${alias}" ]]; then
+  for file in ${alias}/**; do
+    source "$file"
+  done
+fi
+
+# homebrew
+eval $(/opt/homebrew/bin/brew shellenv)
+
+# Zoxide
+eval "$(zoxide init zsh)"
+
+# Hook direnv into zsh
+eval "$(direnv hook zsh)"
+
+# asdf
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+# Added by Windsurf
+export PATH="/Users/andrebras/.codeium/windsurf/bin:$PATH"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/andrebras/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

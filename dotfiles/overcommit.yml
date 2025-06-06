@@ -1,0 +1,21 @@
+CommitMsg:
+  AddTicketId:
+    enabled: true
+    required_executable: './bin/overcommit_hooks/prepend_task_id_to_commit_msg'
+
+PreCommit:
+  Brakeman:
+    enabled: false
+      # command: ['bundle', 'exec', 'rubocop']
+      command: "git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs bundle exec brakeman"
+  Reek:
+    enabled: false
+      # command: ['bundle', 'exec', 'reek', '-c', '.reek.yml']
+      command: "git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs bundle exec reek -c .reek.yml"
+  RuboCop:
+    enabled: true
+      # command: ['bundle', 'exec', 'rubocop'] # Invoke within Bundler context
+      command: "git ls-files -m | xargs ls -1 2>/dev/null | grep '\.rb$' | xargs bundle exec rubocop"
+  Sorbet:
+    enabled: false
+    command: ['bundle', 'exec', 'srb', 't']

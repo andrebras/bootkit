@@ -1,0 +1,211 @@
+config:
+  backup: true
+  banner: true
+  create: true
+  dotpath: dotfiles
+  keepdot: false
+  link_dotfile_default: nolink
+  link_on_import: nolink
+  longkey: false
+variables:
+  keyid: E7CFA32A
+trans_install:
+  _decrypt: gpg -q --for-your-eyes-only--no-tty -d {0} > {1}
+trans_update:
+  _encrypt: gpg -q -r {{@@ keyid @@}} --armor --no-tty -o {1} -e {0}
+dotfiles:
+  f_vimrc:
+    src: vimrc
+    dst: ~/.vimrc
+  f_zshrc:
+    src: zshrc
+    dst: ~/.zshrc
+  f_ansible.cfg:
+    src: ansible.cfg
+    dst: ~/.ansible.cfg
+  f_asdfrc:
+    src: asdfrc
+    dst: ~/.asdfrc
+  f_editorconfig:
+    src: editorconfig
+    dst: ~/.editorconfig
+  f_gemrc:
+    src: gemrc
+    dst: ~/.gemrc
+  f_gitignore_global:
+    src: gitignore_global
+    dst: ~/.gitignore_global
+  f_gitconfig:
+    src: gitconfig
+    dst: ~/.gitconfig
+  f_overcommit.yml:
+    src: overcommit.yml
+    dst: ~/.overcommit.yml
+  f_p10k.zsh:
+    src: p10k.zsh
+    dst: ~/.p10k.zsh
+  f_taskrc:
+    src: taskrc
+    dst: ~/.taskrc
+  f_tmux.conf:
+    src: tmux.conf
+    dst: ~/.tmux.conf
+  f_config:
+    src: aws/config
+    dst: ~/.aws/config
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_credentials:
+    src: aws/credentials
+    dst: ~/.aws/credentials
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_zprofile:
+    src: zprofile
+    dst: ~/.zprofile
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_vault_pass:
+    src: vault_pass
+    dst: ~/.vault_pass
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_circleci_rsa.pub:
+    src: ssh/circleci_rsa.pub
+    dst: ~/.ssh/circleci_rsa.pub
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_github.pub:
+    src: ssh/id_github.pub
+    dst: ~/.ssh/id_github.pub
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_rsa_circleci.pub:
+    src: ssh/id_rsa_circleci.pub
+    dst: ~/.ssh/id_rsa_circleci.pub
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_rsa.pub:
+    src: ssh/id_rsa.pub
+    dst: ~/.ssh/id_rsa.pub
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_ssh_config:
+    src: ssh/config
+    dst: ~/.ssh/config
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_circleci_rsa:
+    src: ssh/circleci_rsa
+    dst: ~/.ssh/circleci_rsa
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_ec2_andrebras_mooxoo.pem:
+    src: ssh/ec2_andrebras_mooxoo.pem
+    dst: ~/.ssh/ec2_andrebras_mooxoo.pem
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_github:
+    src: ssh/id_github
+    dst: ~/.ssh/id_github
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_rsa:
+    src: ssh/id_rsa
+    dst: ~/.ssh/id_rsa
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_id_rsa_circleci:
+    src: ssh/id_rsa_circleci
+    dst: ~/.ssh/id_rsa_circleci
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_gpg-agent.conf:
+    src: gnupg/gpg-agent.conf
+    dst: ~/.gnupg/gpg-agent.conf
+    chmod: '600'
+  f_gpg.conf:
+    src: gnupg/gpg.conf
+    dst: ~/.gnupg/gpg.conf
+    chmod: '600'
+  d_alacritty:
+    src: config/alacritty
+    dst: ~/.config/alacritty
+  d_alias:
+    src: config/alias
+    dst: ~/.config/alias
+  d_direnv:
+    src: config/direnv
+    dst: ~/.config/direnv
+  d_karabiner:
+    src: config/karabiner
+    dst: ~/.config/karabiner
+    chmod: '700'
+  f_karabiner.json:
+    src: config/karabiner/karabiner.json
+    dst: ~/.config/karabiner/karabiner.json
+    chmod: '600'
+  f_1683048690.json:
+    src: config/karabiner/assets/complex_modifications/1683048690.json
+    dst: ~/.config/karabiner/assets/complex_modifications/1683048690.json
+  f_1683049260.json:
+    src: config/karabiner/assets/complex_modifications/1683049260.json
+    dst: ~/.config/karabiner/assets/complex_modifications/1683049260.json
+  f_nix.conf:
+    src: config/nix/nix.conf
+    dst: ~/.config/nix/nix.conf
+  d_lvim:
+    src: config/lvim
+    dst: ~/.config/lvim
+  d_nvim:
+    src: config/nvim
+    dst: ~/.config/nvim
+profiles:
+  PUB-MAC-BRASA:
+    dotfiles:
+    - f_vimrc
+    - f_zshrc
+    - f_ansible.cfg
+    - f_asdfrc
+    - f_editorconfig
+    - f_gemrc
+    - f_gitignore_global
+    - f_gitconfig
+    - f_overcommit.yml
+    - f_p10k.zsh
+    - f_taskrc
+    - f_tmux.conf
+    - f_config
+    - f_credentials
+    - f_zprofile
+    - f_vault_pass
+    - f_circleci_rsa.pub
+    - f_id_github.pub
+    - f_id_rsa_circleci.pub
+    - f_id_rsa.pub
+    - f_ssh_config
+    - f_circleci_rsa
+    - f_ec2_andrebras_mooxoo.pem
+    - f_id_github
+    - f_id_rsa
+    - f_id_rsa_circleci
+    - f_gpg-agent.conf
+    - f_gpg.conf
+    - d_alacritty
+    - d_alias
+    - d_direnv
+    - d_karabiner
+    - f_karabiner.json
+    - f_1683048690.json
+    - f_1683049260.json
+    - f_nix.conf
+    - d_lvim
+    - d_nvim

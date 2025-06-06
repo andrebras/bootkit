@@ -1,0 +1,73 @@
+# GitHub Light Theme for Alacritty in TOML format
+
+[colors.primary]
+foreground = '#24292e'
+background = '#ffffff'
+dim_foreground = '#959da5'
+bright_foreground = '#24292e'
+
+[colors.cursor]
+text = '#ffffff'
+cursor = '#24292e'
+
+[colors.vi_mode_cursor]
+text = '#ffffff'
+cursor = '#24292e'
+
+[colors.search.matches]
+foreground = '#24292e'
+background = '#f6f8fa'
+
+[colors.search.focused_match]
+foreground = '#ffffff'
+background = '#0366d6'
+
+[colors.hints.start]
+foreground = '#24292e'
+background = '#f6f8fa'
+
+[colors.hints.end]
+foreground = '#959da5'
+background = '#f6f8fa'
+
+[colors.line_indicator]
+foreground = 'None'
+background = 'None'
+
+[colors.footer_bar]
+foreground = '#24292e'
+background = '#f6f8fa'
+
+[colors.selection]
+text = '#24292e'
+background = '#f6f8fa'
+
+[colors.normal]
+black = '#1b1f23'
+red = '#d73a49'
+green = '#22863a'
+yellow = '#dbab09'
+blue = '#005cc5'
+magenta = '#6f42c1'
+cyan = '#0366d6'
+white = '#959da5'
+
+[colors.bright]
+black = '#586069'
+red = '#ea4a5a'
+green = '#34d058'
+yellow = '#ffea7f'
+blue = '#79b8ff'
+magenta = '#b392f0'
+cyan = '#66d9ef'
+white = '#ffffff'
+
+[colors.dim]
+black = '#586069'
+red = '#d73a49'
+green = '#22863a'
+yellow = '#dbab09'
+blue = '#005cc5'
+magenta = '#6f42c1'
+cyan = '#0366d6'
+white = '#959da5'

@@ -1,0 +1,87 @@
+[user]
+  name = André Brás
+  email = andrebras@gmail.com
+  signingkey = E7CFA32A
+
+[core]
+  excludesfile = /Users/andrebras/.gitignore_global
+  autocrlf = input
+  safecrlf = true
+  editor = vim
+  quotepath = false
+  pager = diff-so-fancy | less --tabs=4 -RF
+  ; commentchar = !
+  ; editor = code --new-window --disable-extensions --wait
+
+[init]
+  defaultBranch = main
+
+[gpg]
+  program = /opt/homebrew/bin/gpg
+
+[commit]
+  gpgsign = true
+
+[pull]
+  rebase = merges
+
+[merge]
+  tool = opendiff
+
+[diff]
+  tool = opendiff
+
+[mergetool]
+  prompt     = false
+  keepBackup = false
+  ; trustExitCode = true
+
+[mergetool "opendiff"]
+  cmd = opendiff $LOCAL $REMOTE -merge $MERGED
+
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
+
+[difftool]
+  prompt = false
+
+[difftool "opendiff"]
+  cmd = opendiff "$LOCAL" "$REMOTE"
+
+[filter "media"]
+  required = true
+  clean    = git media clean %f
+  smudge   = git media smudge %f
+
+[filter "lfs"]
+  process  = git-lfs filter-process
+  required = true
+  clean    = git-lfs clean -- %f
+  mudge    = git-lfs smudge -- %f
+  smudge   = git-lfs smudge -- %f
+
+[color]
+  diff   = auto
+  status = auto
+  branch = auto
+  ui     = auto
+
+[rerere]
+  enabled = true
+
+[column]
+  ui = auto
+
+[branch]
+  sort = -committerdate
+
+[maintenance]
+  repo = /Users/andrebras/Lab/revolution
+  repo = /Users/andrebras/Lab/dpworx
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[alias]
+  switchback = switch -
+  sb = switchback

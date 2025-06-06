@@ -1,0 +1,7 @@
+# Files
+data.location=~/.task
+
+# Case sensitivity for string searches
+regex=on
+search.case.sensitive=no
+news.version=3.1.0

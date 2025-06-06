@@ -1,0 +1,51 @@
+{
+    "global": { "ask_for_confirmation_before_quitting": false },
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Toggle Caps Lock when both left and right shift are pressed",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["any"] },
+                                    "simultaneous": [
+                                        { "key_code": "left_shift" },
+                                        { "key_code": "right_shift" }
+                                    ]
+                                },
+                                "to": [{ "key_code": "caps_lock" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 591,
+                        "vendor_id": 1452
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "right_control" },
+                            "to": [{ "key_code": "right_option" }]
+                        }
+                    ]
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "simple_modifications": [
+                {
+                    "from": { "key_code": "caps_lock" },
+                    "to": [{ "key_code": "left_control" }]
+                }
+            ],
+            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
+        }
+    ]
+}
