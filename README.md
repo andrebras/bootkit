@@ -11,12 +11,12 @@ A secure, reproducible developer environment bootstrapper that sets up your macO
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Usage](#usage)
+- [What Gets Installed](#what-gets-installed)
 - [Configuration](#configuration)
+- [GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
 - [Directory Structure](#directory-structure)
 - [Customizing](#customizing)
 - [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## 🔍 Overview
