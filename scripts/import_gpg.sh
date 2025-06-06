@@ -23,11 +23,17 @@ GPG_KEY=$(op read "op://Dotfiles/GPG Key/notes") || {
   exit 1
 }
 
-# Import the key to GPG
-echo "Importing GPG key..."
-echo "$GPG_KEY" | gpg --import || {
-  echo "Failed to import GPG key"
-  exit 1
-}
+# Extract key identifier from GPG key (email or fingerprint)
+KEY_ID=$(echo "$GPG_KEY" | grep -oE "([0-9A-F]{8,40}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})" | head -n 1)
 
-echo "GPG key imported successfully"
+# Check if key exists before importing
+if [ -n "$KEY_ID" ] && gpg --list-keys "$KEY_ID" &>/dev/null; then
+  echo "GPG key already imported."
+else
+  echo "Importing GPG key..."
+  echo "$GPG_KEY" | gpg --import || {
+    echo "Failed to import GPG key"
+    exit 1
+  }
+  echo "GPG key imported successfully"
+fi
