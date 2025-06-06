@@ -83,7 +83,7 @@ The `config.yaml` file contains your Dotdrop configuration:
 ```yaml
 # Configuration for handling sensitive files
 variables:
-  keyid: "11223344"  # Your GPG key ID
+  keyid: "{{@@ env['GPG_KEY_ID'] @@}}"  # Uses GPG key ID automatically extracted during installation
 trans_install:
   _decrypt: "gpg -q --for-your-eyes-only--no-tty -d {0} > {1}"
 trans_update:

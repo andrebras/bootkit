@@ -8,7 +8,7 @@ config:
   link_on_import: nolink
   longkey: false
 variables:
-  keyid: E7CFA32A
+  keyid: "{{@@ env['GPG_KEY_ID'] @@}}"
 trans_install:
   _decrypt: gpg -q --for-your-eyes-only--no-tty -d {0} > {1}
 trans_update:

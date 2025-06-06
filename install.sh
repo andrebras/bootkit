@@ -30,6 +30,15 @@ brew bundle || { echo "Failed to install packages from Brewfile."; exit 1; }
 echo "Setting up GPG key from 1Password..."
 source "$(dirname "$0")/scripts/import_gpg.sh"
 
+# Extract GPG key ID for dotdrop
+echo "Extracting GPG key ID for dotdrop..."
+export GPG_KEY_ID="$(gpg --list-secret-keys --with-colons | grep '^sec' | cut -d':' -f5 | head -n1)"
+if [ -z "$GPG_KEY_ID" ]; then
+  echo "Failed to extract GPG key ID. Dotfile encryption/decryption may fail."
+else
+  echo "Using GPG key ID: ${GPG_KEY_ID}"
+fi
+
 # Install dotfiles with Dotdrop
 echo "Installing dotfiles with Dotdrop..."
 dotdrop install -p PUB-MAC-BRASA
