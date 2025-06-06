@@ -29,7 +29,7 @@ BootKit creates a consistent, reproducible developer environment, allowing you t
 - ✅ **Dotfile Management**: Version-controlled configuration files via Dotdrop
 - 🔐 **Secure Credentials**: GPG key import via 1Password CLI
 - ⚡ **Shell Enhancement**: Zsh plugin management with zgenom
-- 📦 **Reproducibility**: Infrastructure-as-code approach for your dev environment
+- 📦 **Reproducibility**: Consistent environment setup across multiple machines
 - 🔄 **Idempotent**: Safely run multiple times without side effects
 
 ## 🔧 Prerequisites
@@ -48,8 +48,8 @@ git clone git@github.com:you/bootkit.git ~/bootkit
 # Navigate to the directory
 cd ~/bootkit
 
-# Run the bootkit script
-./bootkit.sh
+# Run the installation script
+./install.sh
 ```
 
 ## 📦 What Gets Installed
@@ -108,10 +108,10 @@ To add existing dotfiles to be managed by Dotdrop:
 
 ```bash
 # Import a regular dotfile
-dotdrop import ~/.zshrc
+dotdrop import ~/.some_dotfile
 
 # Import and encrypt sensitive dotfiles
-dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret
+dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret_file
 ```
 
 #### Profiles
@@ -130,13 +130,13 @@ Dotfiles are organized by profiles in the `config.yaml` file, allowing different
    - Title: `GPG Key`
    - Store key in `notes` field
 
-3. The bootkit script will import it automatically during setup.
+3. The installation script will import it automatically during setup.
 
 ## 📂 Directory Structure
 
 ```
 bootkit/
-├── bootkit.sh           # Main installation script
+├── install.sh           # Main installation script
 ├── Brewfile             # Homebrew package definitions
 ├── config.yaml          # Dotdrop configuration
 ├── dotfiles/            # Your dotfiles
@@ -151,8 +151,17 @@ bootkit/
 
 The BootKit is designed to be easily customized:
 
-1. **Adding new dotfiles**: Place files in the `dotfiles/` directory and update `config.yaml`
+1. **Adding new dotfiles**: Use Dotdrop's import command to add files:
+   ```bash
+   # Import a regular dotfile
+   dotdrop import ~/.some_dotfile
+   
+   # Import and encrypt sensitive dotfiles
+   dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret_file
+   ```
+
 2. **Adding new packages**: Update the `Brewfile` with new packages
+
 3. **Custom scripts**: Add any custom installation scripts to the `scripts/` directory
 
 ## ❓ Troubleshooting
@@ -160,13 +169,9 @@ The BootKit is designed to be easily customized:
 ### Common Issues
 
 - **GPG key import fails**: Ensure your 1Password note is properly formatted and the CLI has access
-- **Homebrew installation errors**: Check internet connection and try running `bootkit.sh` again
+- **Homebrew installation errors**: Check internet connection and try running `install.sh` again
 - **Dotfile conflicts**: Backup and remove existing dotfiles if you encounter symlink errors
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-Maintain this project like any other software development project - with version control, documentation, and care.
