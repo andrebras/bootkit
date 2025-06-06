@@ -1,4 +1,4 @@
-# 🧰 Bootkit
+# Bootkit
 
 A secure, reproducible developer environment bootstrapper that sets up your macOS system with essential tools and configurations using declarative definitions.
 
@@ -7,23 +7,23 @@ A secure, reproducible developer environment bootstrapper that sets up your macO
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [What Gets Installed](#what-gets-installed)
-- [Configuration](#configuration)
-- [GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
-- [Directory Structure](#directory-structure)
-- [Customizing](#customizing)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
+- [🔍 Overview](#overview)
+- [✨ Features](#features)
+- [🔧 Prerequisites](#prerequisites)
+- [🚀 Installation](#installation)
+- [📦 What Gets Installed](#what-gets-installed)
+- [⚙️ Configuration](#configuration)
+- [🔐 GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
+- [📂 Directory Structure](#directory-structure)
+- [🛠️ Customizing](#customizing)
+- [❓ Troubleshooting](#troubleshooting)
+- [📄 License](#license)
 
-## 🔍 Overview
+## Overview
 
 BootKit creates a consistent, reproducible developer environment, allowing you to declaratively define your toolset and configurations. Restore your complete environment on a new machine or keep multiple machines in sync with minimal effort.
 
-## ✨ Features
+## Features
 
 - ✅ **Homebrew Integration**: Automated package installation via Brewfile
 - ✅ **Dotfile Management**: Version-controlled configuration files via Dotdrop
@@ -32,14 +32,14 @@ BootKit creates a consistent, reproducible developer environment, allowing you t
 - 📦 **Reproducibility**: Consistent environment setup across multiple machines
 - 🔄 **Idempotent**: Safely run multiple times without side effects
 
-## 🔧 Prerequisites
+## Prerequisites
 
 - macOS (tested on Sequoia 15.5)
 - Terminal access
 - 1Password account (for GPG key storage/retrieval)
 - Git
 
-## 🚀 Installation
+## Installation
 
 ```bash
 # Clone the repository
@@ -52,7 +52,7 @@ cd ~/bootkit
 ./install.sh
 ```
 
-## 📦 What Gets Installed
+## What Gets Installed
 
 - Homebrew (if missing)
 - All packages defined in Brewfile
@@ -60,7 +60,7 @@ cd ~/bootkit
 - Zgenom for Zsh plugin management
 - Dotfiles (managed via Dotdrop)
 
-## ⚙️ Configuration
+## Configuration
 
 ### Homebrew Packages
 
@@ -118,7 +118,7 @@ dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret_file
 
 Dotfiles are organized by profiles in the `config.yaml` file, allowing different configurations for different machines.
 
-## 🔐 GPG Key Setup with 1Password
+## GPG Key Setup with 1Password
 
 1. Export your private key:
    ```bash
@@ -132,7 +132,7 @@ Dotfiles are organized by profiles in the `config.yaml` file, allowing different
 
 3. The installation script will import it automatically during setup.
 
-## 📂 Directory Structure
+## Directory Structure
 
 ```
 bootkit/
@@ -147,7 +147,7 @@ bootkit/
     └── ...
 ```
 
-## 🛠️ Customizing
+## Customizing
 
 The BootKit is designed to be easily customized:
 
@@ -164,7 +164,7 @@ The BootKit is designed to be easily customized:
 
 3. **Custom scripts**: Add any custom installation scripts to the `scripts/` directory
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -172,6 +172,6 @@ The BootKit is designed to be easily customized:
 - **Homebrew installation errors**: Check internet connection and try running `install.sh` again
 - **Dotfile conflicts**: Backup and remove existing dotfiles if you encounter symlink errors
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
