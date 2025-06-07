@@ -1,0 +1,12 @@
+# Logging Configuration
+logging:
+  level: info
+
+# 1Password Configuration
+onepassword:
+  vault: Dotfiles
+  gpg_key_path: GPG Key/notes
+
+# GPG Configuration
+gpg:
+  key_id: ~ # Specify your GPG key ID

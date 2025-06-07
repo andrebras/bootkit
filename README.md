@@ -31,6 +31,8 @@ BootKit creates a consistent, reproducible developer environment, allowing you t
 - ⚡ **Shell Enhancement**: Zsh plugin management with zgenom
 - 📦 **Reproducibility**: Consistent environment setup across multiple machines
 - 🔄 **Idempotent**: Safely run multiple times without side effects
+- 🧩 **Modular Design**: Ruby-based helper libraries for maintainability
+- ⚙️ **Configurable**: YAML-based configuration for flexibility
 
 ## Prerequisites
 
@@ -49,7 +51,7 @@ git clone git@github.com:you/bootkit.git ~/bootkit
 cd ~/bootkit
 
 # Run the installation script
-./install.sh
+./bin/install
 ```
 
 ## What Gets Installed
@@ -61,6 +63,34 @@ cd ~/bootkit
 - Dotfiles (managed via Dotdrop)
 
 ## Configuration
+
+### YAML Configuration
+
+BootKit uses YAML for configuration. A `bootkit.example.yml` file is provided as a template and automatically copied to `bootkit.yml` during installation:
+
+```yaml
+# 1Password Configuration
+onepassword:
+  vault: Dotfiles              # Name of your 1Password vault
+  gpg_key_path: GPG Key/notes  # Path to your GPG key in 1Password
+
+# GPG Configuration
+gpg:
+  key_id: ~                    # Optional: Specify your GPG key ID directly
+
+# Logging Configuration
+logging:
+  level: info                  # Log level: debug, info, warn, error
+```
+
+You can edit the `bootkit.yml` file to customize your settings:
+
+```bash
+# Edit the configuration file
+nano bootkit.yml
+```
+
+> **Important**: The `bootkit.yml` file may contain sensitive information and is automatically added to `.gitignore`. Never commit this file to version control.
 
 ### Homebrew Packages
 
@@ -126,25 +156,36 @@ Dotfiles are organized by profiles in the `config.yaml` file, allowing different
    ```
 
 2. Save it to a 1Password secure note:
-   - Vault: `Dotfiles`
-   - Title: `GPG Key`
+   - Vault: `Dotfiles` (or the value specified in your `bootkit.yml` file)
+   - Title: `GPG Key` (or the path specified in your `bootkit.yml` file)
    - Store key in `notes` field
 
 3. The installation script will import it automatically during setup.
+
+4. Alternatively, you can specify your GPG key ID directly in the `bootkit.yml` file:
+   ```yaml
+   gpg:
+     key_id: E7CFA32A  # Your GPG key ID
+   ```
 
 ## Directory Structure
 
 ```
 bootkit/
-├── install.sh           # Main installation script
-├── Brewfile             # Homebrew package definitions
-├── config.yaml          # Dotdrop configuration
-├── dotfiles/            # Your dotfiles
-│   ├── zshrc            # Zsh configuration
-│   ├── gitconfig        # Git configuration
-│   └── ...              # Other dotfiles
-└── scripts/             # Helper scripts
-    └── ...
+├── bin/                # Executable scripts
+│   ├── install         # Main installation script
+│   └── import_gpg      # GPG key import script
+├── lib/                # Ruby libraries and modules
+│   ├── bootkit_helpers.rb  # Common helper functions
+│   └── import_gpg.rb   # GPG key import implementation
+├── Brewfile            # Homebrew package definitions
+├── bootkit.example.yml # Example configuration
+├── bootkit.yml         # Your configuration (gitignored)
+├── config.yaml         # Dotdrop configuration
+└── dotfiles/           # Your dotfiles
+    ├── zshrc           # Zsh configuration
+    ├── gitconfig       # Git configuration
+    └── ...             # Other dotfiles
 ```
 
 ## Customizing
@@ -162,16 +203,48 @@ The BootKit is designed to be easily customized:
 
 2. **Adding new packages**: Update the `Brewfile` with new packages
 
-3. **Custom scripts**: Add any custom installation scripts to the `scripts/` directory
+3. **Custom scripts**: Add any custom installation scripts to the `bin/` directory
 
 ## Troubleshooting
 
 ### Common Issues
 
-- **GPG key import fails**: Ensure your 1Password note is properly formatted and the CLI has access
-- **Homebrew installation errors**: Check internet connection and try running `install.sh` again
-- **Dotfile conflicts**: Backup and remove existing dotfiles if you encounter symlink errors
+- **GPG key import fails**: 
+  - Ensure your 1Password note is properly formatted and the CLI has access
+  - Check that your `bootkit.yml` file has the correct vault name and path
+  - If specifying a GPG key ID directly, verify it's correct with `gpg --list-keys`
+
+- **Ruby script errors**:
+  - Ensure Ruby is installed: `ruby --version`
+  - Check permissions on scripts: `chmod +x bin/*`
+
+- **1Password CLI authentication issues**:
+  - Verify 1Password CLI is installed: `op --version`
+  - Ensure you're using the correct account details
+  - Try signing in manually first: `op signin`
+
+- **Homebrew installation errors**: 
+  - Check internet connection and try running `bin/install` again
+  - For permission issues: `sudo chown -R $(whoami) /usr/local/Homebrew`
+
+- **Dotfile conflicts**: 
+  - Backup and remove existing dotfiles if you encounter symlink errors
+
+### Debugging
+
+For more detailed debugging of the GPG key import process:
+
+```bash
+# Run the script with more verbose output
+BOOTKIT_LOG_LEVEL=debug ./bin/import_gpg
+
+# Check if your GPG key is properly imported
+gpg --list-secret-keys
+
+# Verify 1Password CLI can access your vault
+op list items --vault="Dotfiles"
+```
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details
