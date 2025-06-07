@@ -10,3 +10,7 @@ onepassword:
 # GPG Configuration
 gpg:
   key_id: ~ # Specify your GPG key ID
+
+# Dotdrop Configuration
+dotdrop:
+  profile: ANDRES-MACBOOK # usually hostname
