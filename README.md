@@ -1,38 +1,38 @@
 # Bootkit
 
-A secure, reproducible developer environment bootstrapper that sets up your macOS system with essential tools and configurations using declarative definitions.
+A secure, reproducible developer environment bootstrapper for macOS that sets up your system with essential tools and configurations.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![macOS](https://img.shields.io/badge/platform-macOS-lightgrey)]()
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [🔍 Overview](#overview)
-- [✨ Features](#features)
-- [🔧 Prerequisites](#prerequisites)
-- [🚀 Installation](#installation)
-- [📦 What Gets Installed](#what-gets-installed)
-- [⚙️ Configuration](#configuration)
-- [🔐 GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
-- [📂 Directory Structure](#directory-structure)
-- [🛠️ Customizing](#customizing)
-- [❓ Troubleshooting](#troubleshooting)
-- [📄 License](#license)
+- [Overview](#overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [What Gets Installed](#what-gets-installed)
+- [Configuration](#configuration)
+- [GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
+- [Directory Structure](#directory-structure)
+- [Customizing](#customizing)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ## Overview
 
-BootKit creates a consistent, reproducible developer environment, allowing you to declaratively define your toolset and configurations. Restore your complete environment on a new machine or keep multiple machines in sync with minimal effort.
+BootKit helps you set up a consistent development environment on macOS. It uses a declarative approach to define your tools and configurations, making it easy to restore your complete environment on a new machine or keep multiple machines in sync.
 
 ## Features
 
-- ✅ **Homebrew Integration**: Automated package installation via Brewfile
-- ✅ **Dotfile Management**: Version-controlled configuration files via Dotdrop
-- 🔐 **Secure Credentials**: GPG key import via 1Password CLI
-- ⚡ **Shell Enhancement**: Zsh plugin management with zgenom
-- 📦 **Reproducibility**: Consistent environment setup across multiple machines
-- 🔄 **Idempotent**: Safely run multiple times without side effects
-- 🧩 **Modular Design**: Ruby-based helper libraries for maintainability
-- ⚙️ **Configurable**: YAML-based configuration for flexibility
+- **Homebrew Integration**: Installs packages from your Brewfile
+- **Dotfile Management**: Manages configuration files with Dotdrop
+- **Secure Credentials**: Imports GPG keys from 1Password
+- **Shell Enhancement**: Sets up Zsh plugins with zgenom
+- **Reproducibility**: Creates the same environment across machines
+- **Idempotent**: Safe to run multiple times
+- **Modular Design**: Uses Ruby components for maintainability
+- **Configurable**: Simple YAML configuration
 
 ## Prerequisites
 
@@ -50,6 +50,12 @@ git clone git@github.com:you/bootkit.git ~/bootkit
 # Navigate to the directory
 cd ~/bootkit
 
+# Create your configuration file from the example
+cp bootkit.example.yml bootkit.yml
+
+# Edit the configuration file to match your needs
+nano bootkit.yml
+
 # Run the installation script
 ./bin/install
 ```
@@ -66,7 +72,7 @@ cd ~/bootkit
 
 ### YAML Configuration
 
-BootKit uses YAML for configuration. A `bootkit.example.yml` file is provided as a template and automatically copied to `bootkit.yml` during installation:
+BootKit uses a simple YAML file for configuration. Copy the example file to get started:
 
 ```yaml
 # 1Password Configuration
@@ -78,14 +84,21 @@ onepassword:
 gpg:
   key_id: ~                    # Optional: Specify your GPG key ID directly
 
+# Dotdrop Configuration
+dotdrop:
+  profile: HOSTNAME            # Your dotdrop profile name (usually hostname)
+
 # Logging Configuration
 logging:
   level: info                  # Log level: debug, info, warn, error
 ```
 
-You can edit the `bootkit.yml` file to customize your settings:
+Create and edit your configuration file:
 
 ```bash
+# Create your configuration file
+cp bootkit.example.yml bootkit.yml
+
 # Edit the configuration file
 nano bootkit.yml
 ```
@@ -99,152 +112,101 @@ Edit the `Brewfile` to customize which packages, casks, and App Store applicatio
 ```ruby
 # Example Brewfile entries
 brew "git"
-brew "node"
+brew "gpg"
+brew "zsh"
 cask "visual-studio-code"
-mas "Xcode", id: 497799835
+mas "1Password", id: 1333542190
 ```
-
-### Dotfiles
-
-Dotfiles are managed using [Dotdrop](https://github.com/deadc0de6/dotdrop), which provides powerful features like templating, encryption, and profile-based configuration.
-
-The `config.yaml` file contains your Dotdrop configuration:
-
-```yaml
-# Configuration for handling sensitive files
-variables:
-  keyid: "{{@@ env['GPG_KEY_ID'] @@}}"  # Uses GPG key ID automatically extracted during installation
-trans_install:
-  _decrypt: "gpg -q --for-your-eyes-only--no-tty -d {0} > {1}"
-trans_update:
-  _encrypt: "gpg -q -r {{@@ keyid @@}} --armor --no-tty -o {1} -e {0}"
-
-# Dotfile definitions
-dotfiles:
-  f_zshrc:
-    src: zshrc       # File in dotfiles/ directory
-    dst: ~/.zshrc    # Destination in your home directory
-  f_ssh_config:
-    src: ssh/config
-    dst: ~/.ssh/config
-    chmod: '600'     # Set specific permissions
-    trans_install: _decrypt  # Use decryption during installation
-    trans_update: _encrypt   # Use encryption when updating
-```
-
-#### Adding New Dotfiles
-
-To add existing dotfiles to be managed by Dotdrop:
-
-```bash
-# Import a regular dotfile
-dotdrop import ~/.some_dotfile
-
-# Import and encrypt sensitive dotfiles
-dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret_file
-```
-
-#### Profiles
-
-Dotfiles are organized by profiles in the `config.yaml` file, allowing different configurations for different machines.
 
 ## GPG Key Setup with 1Password
 
-1. Export your private key:
+BootKit can automatically import your GPG key from 1Password. To set this up:
+
+1. Export your private GPG key:
    ```bash
-   gpg --export-secret-keys --armor you@example.com
+   gpg --export-secret-keys -a YOUR_KEY_ID > private.key
    ```
 
 2. Save it to a 1Password secure note:
    - Vault: `Dotfiles` (or the value specified in your `bootkit.yml` file)
-   - Title: `GPG Key` (or the path specified in your `bootkit.yml` file)
-   - Store key in `notes` field
+   - Title: `GPG Key` (or the item name specified in your `bootkit.yml` file)
+   - Store the key in the `notes` field (the default field in a secure note)
 
-3. The installation script will import it automatically during setup.
-
-4. Alternatively, you can specify your GPG key ID directly in the `bootkit.yml` file:
-   ```yaml
-   gpg:
-     key_id: E7CFA32A  # Your GPG key ID
-   ```
+The installer will automatically retrieve this key and import it into your GPG keyring.
 
 ## Directory Structure
 
 ```
 bootkit/
-├── bin/                # Executable scripts
-│   ├── install         # Main installation script
-│   └── import_gpg      # GPG key import script
-├── lib/                # Ruby libraries and modules
-│   ├── bootkit_helpers.rb  # Common helper functions
-│   └── import_gpg.rb   # GPG key import implementation
-├── Brewfile            # Homebrew package definitions
-├── bootkit.example.yml # Example configuration
-├── bootkit.yml         # Your configuration (gitignored)
-├── config.yaml         # Dotdrop configuration
-└── dotfiles/           # Your dotfiles
-    ├── zshrc           # Zsh configuration
-    ├── gitconfig       # Git configuration
-    └── ...             # Other dotfiles
+├── bin/                       # Executable scripts
+│   └── install                # Main installation script
+├── lib/                       # Ruby library files
+│   ├── bootkit_helpers.rb     # Common helper functions
+│   ├── brew_manager.rb        # Homebrew package management
+│   ├── config_manager.rb      # Configuration loading and access
+│   ├── dotfile_manager.rb     # Dotfile management via dotdrop
+│   ├── gpg_manager.rb         # GPG key management
+│   ├── installer.rb           # Main installer class
+│   ├── onepassword_manager.rb # 1Password CLI management
+│   ├── system_manager.rb      # System compatibility checks
+│   └── zgenom_manager.rb      # Zsh plugin management
+├── Brewfile                   # Homebrew package definitions
+├── bootkit.example.yml        # Example configuration template
+├── bootkit.yml                # Your personal configuration (created from example)
+├── README.md                  # This documentation
+└── LICENSE                    # MIT License
 ```
 
 ## Customizing
 
-The BootKit is designed to be easily customized:
+### Adding New Packages
 
-1. **Adding new dotfiles**: Use Dotdrop's import command to add files:
-   ```bash
-   # Import a regular dotfile
-   dotdrop import ~/.some_dotfile
-   
-   # Import and encrypt sensitive dotfiles
-   dotdrop import --transw=_encrypt --transr=_decrypt ~/.secret_file
-   ```
+To add new packages, edit the `Brewfile`:
 
-2. **Adding new packages**: Update the `Brewfile` with new packages
+```ruby
+# Add homebrew formulae
+brew "your-package-name"
 
-3. **Custom scripts**: Add any custom installation scripts to the `bin/` directory
+# Add casks (applications)
+cask "your-application"
+
+# Add Mac App Store applications
+mas "App Name", id: 123456789
+```
+
+### Extending Functionality
+
+The modular design makes it easy to extend BootKit:
+
+1. Create a new manager class in `lib/` following the existing pattern
+2. Add the new manager to the `Installer` class in `lib/installer.rb`
+3. Update the configuration template if needed
 
 ## Troubleshooting
 
-### Common Issues
+### Configuration File Missing
 
-- **GPG key import fails**: 
-  - Ensure your 1Password note is properly formatted and the CLI has access
-  - Check that your `bootkit.yml` file has the correct vault name and path
-  - If specifying a GPG key ID directly, verify it's correct with `gpg --list-keys`
+If you see an error about the configuration file missing:
 
-- **Ruby script errors**:
-  - Ensure Ruby is installed: `ruby --version`
-  - Check permissions on scripts: `chmod +x bin/*`
+```
+ERROR: Configuration file not found: /path/to/bootkit.yml
+```
 
-- **1Password CLI authentication issues**:
-  - Verify 1Password CLI is installed: `op --version`
-  - Ensure you're using the correct account details
-  - Try signing in manually first: `op signin`
-
-- **Homebrew installation errors**: 
-  - Check internet connection and try running `bin/install` again
-  - For permission issues: `sudo chown -R $(whoami) /usr/local/Homebrew`
-
-- **Dotfile conflicts**: 
-  - Backup and remove existing dotfiles if you encounter symlink errors
-
-### Debugging
-
-For more detailed debugging of the GPG key import process:
+Create your configuration file from the example:
 
 ```bash
-# Run the script with more verbose output
-BOOTKIT_LOG_LEVEL=debug ./bin/import_gpg
-
-# Check if your GPG key is properly imported
-gpg --list-secret-keys
-
-# Verify 1Password CLI can access your vault
-op list items --vault="Dotfiles"
+cp bootkit.example.yml bootkit.yml
+nano bootkit.yml  # Edit to match your needs
 ```
+
+### GPG Key Import Issues
+
+If you encounter issues with GPG key import:
+
+1. Check that your 1Password vault and item names match your configuration
+2. Ensure the GPG key is properly formatted in the notes field
+3. Verify that you're signed in to 1Password CLI (`op signin`)
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details
+This project is licensed under the MIT License - see the LICENSE file for details.
