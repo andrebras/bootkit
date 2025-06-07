@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/import_gpg'
+
+# Import GPG Key from 1Password
+#
+# This script imports a GPG key from 1Password into the local GPG keyring.
+# It is designed to be idempotent, meaning it will only import the key if it
+# is not already present in the keyring.
+#
+# Usage:
+#   ./bin/import_gpg
+BootKit::ImportGpg.new.run if $PROGRAM_NAME == __FILE__
