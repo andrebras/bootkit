@@ -5,19 +5,15 @@ require 'open3'
 require 'logger'
 require 'fileutils'
 
-# BootKit Helper Library
-#
-# This library provides common helper functions for BootKit scripts.
-# It includes utilities for running commands, logging, and other shared functionality.
-#
-# Usage:
-#   # To use as module methods:
-#   include BootKit::Helpers
-#
-#   # To use as singleton methods:
-#   extend BootKit::Helpers
 module BootKit
+  # Helper module providing common utilities for BootKit components
+  #
+  # This module contains shared functionality like logging, command execution,
+  # and filesystem operations used across the BootKit installer.
   module Helpers
+    # Also provide module methods for backward compatibility
+    extend self
+    
     # Creates a logger instance
     #
     # @param level [Symbol, String] The log level (debug, info, warn, error)
@@ -38,21 +34,54 @@ module BootKit
     
     # Executes a shell command and handles errors
     #
-    # @param cmd [Array<String>] The command to execute as an array of strings
-    # @param input_data [String, nil] Optional input data to pass to the command
-    # @return [String, nil] The command output or nil if the command failed
-    def run_command(cmd, input_data = nil)
-      logger.debug("Running command: #{cmd.join(' ')}")
+    # @param cmd [Array<String>, String] The command to execute as an array of strings or a single string
+    # @param options [Hash] Options for command execution
+    # @option options [Hash] :env Environment variables to set for the command
+    # @option options [String] :dir Working directory for the command
+    # @option options [String] :input Input data to pass to the command
+    # @option options [Integer] :timeout Timeout in seconds (not implemented yet)
+    # @return [Hash] Result hash with :stdout, :stderr, :status, and :success keys
+    def run_command(cmd, options = {})
+      # Convert string command to array if needed
+      cmd = cmd.split(' ') if cmd.is_a?(String)
       
-      stdout_str, stderr_str, status = Open3.capture3(*cmd, stdin_data: input_data)
+      # Extract options
+      env = options[:env] || {}
+      dir = options[:dir]
+      input_data = options[:input]
+      
+      logger.debug("Running command: #{cmd.join(' ')}")
+      if !env.empty?
+        logger.debug("With environment: #{env.inspect}")
+      end
+      if dir
+        logger.debug("In directory: #{dir}")
+      end
+      
+      # Prepare execution options
+      execution_options = {}
+      execution_options[:stdin_data] = input_data if input_data
+      execution_options[:chdir] = dir if dir
+      
+      # Execute command
+      stdout_str, stderr_str, status = Open3.capture3(env, *cmd, execution_options)
+      
+      # Prepare result
+      result = {
+        stdout: stdout_str,
+        stderr: stderr_str,
+        status: status.exitstatus,
+        success: status.success?
+      }
       
       if status.success?
         logger.debug("Command succeeded")
-        stdout_str
       else
-        logger.error("Command failed: #{stderr_str}")
-        nil
+        logger.warn("Command failed with status #{status.exitstatus}")
+        logger.debug("STDERR: #{stderr_str}")
       end
+      
+      result
     end
     
     # Checks if a command is available in the system
@@ -70,12 +99,19 @@ module BootKit
     # @return [Boolean] true if the package is installed or installation succeeded
     def ensure_brew_package(package, options = '')
       if system("brew list #{package} &>/dev/null")
-        logger.info("#{package} is already installed")
+        logger.info("Package '#{package}' is already installed.")
         return true
       end
       
-      logger.info("Installing #{package}...")
-      system("brew install #{options} #{package}")
+      logger.info("Installing package '#{package}'...")
+      cmd = "brew install #{options} #{package}"
+      
+      unless system(cmd)
+        logger.error("Failed to install package '#{package}'.")
+        return false
+      end
+      
+      true
     end
     
     # Ensures a directory exists, creating it if necessary
@@ -83,10 +119,7 @@ module BootKit
     # @param dir [String] The directory path
     # @return [Boolean] true if the directory exists or was created
     def ensure_directory(dir)
-      if Dir.exist?(dir)
-        logger.debug("Directory exists: #{dir}")
-        return true
-      end
+      return true if Dir.exist?(dir)
       
       logger.info("Creating directory: #{dir}")
       begin
@@ -98,7 +131,4 @@ module BootKit
       end
     end
   end
-
-  # Also provide module methods for backward compatibility
-  extend Helpers
 end
