@@ -72,7 +72,7 @@ if ! zgenom saved; then
   zgenom prezto history-substring-search
   zgenom prezto osx
   zgenom prezto ruby
-  zgenom prezto ssh
+  # zgenom prezto ssh
   zgenom prezto syntax-highlighting
   zgenom prezto terminal
   zgenom prezto utility
