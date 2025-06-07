@@ -1,0 +1,14 @@
+# Configuration files with sensitive information
+bootkit.yml
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windsurf specific
+.windsurfrules
+
+# Logs
+*.log
