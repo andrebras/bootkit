@@ -10,7 +10,7 @@ config:
 variables:
   keyid: "{{@@ env['GPG_KEY_ID'] @@}}"
 trans_install:
-  _decrypt: gpg -q --for-your-eyes-only--no-tty -d {0} > {1}
+  _decrypt: gpg -q --for-your-eyes-only --no-tty -d {0} > {1}
 trans_update:
   _encrypt: gpg -q -r {{@@ keyid @@}} --armor --no-tty -o {1} -e {0}
 dotfiles:
@@ -20,6 +20,9 @@ dotfiles:
   f_zshrc:
     src: zshrc
     dst: ~/.zshrc
+  f_zshenv:
+    src: zshenv
+    dst: ~/.zshenv
   f_ansible.cfg:
     src: ansible.cfg
     dst: ~/.ansible.cfg
