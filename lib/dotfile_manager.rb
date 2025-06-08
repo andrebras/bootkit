@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'English'
 require_relative 'bootkit_helpers'
 require_relative 'config_manager'
 require_relative 'gpg_manager'
@@ -9,7 +10,7 @@ module BootKit
   # DotfileManager handles dotfile setup and management via dotdrop
   class DotfileManager
     include BootKit::Helpers
-    
+
     # Initialize the DotfileManager
     #
     # @param config_manager [ConfigManager] The configuration manager instance
@@ -19,7 +20,7 @@ module BootKit
       @config_manager = config_manager
       @gpg_manager = gpg_manager
     end
-    
+
     # Set up dotdrop for dotfile management
     #
     # Uses the GPG key ID from GpgManager to configure dotdrop
@@ -27,45 +28,46 @@ module BootKit
     #
     # @return [Boolean] true if setup succeeded
     def setup
-      logger.info("Setting up dotdrop for dotfile management...")
-      
+      logger.info('Setting up dotdrop for dotfile management...')
+
       # Get GPG key ID from GPG manager
-      gpg_key_id = @gpg_manager.get_key_id
-      
+      gpg_key_id = @gpg_manager.key_id
+
       if gpg_key_id.nil? || gpg_key_id.empty?
-        logger.warn("Failed to get GPG key ID. Dotfile encryption/decryption may fail.")
+        logger.warn('Failed to get GPG key ID. Dotfile encryption/decryption may fail.')
       else
         logger.info("Using GPG key ID: #{gpg_key_id}")
         ENV['GPG_KEY_ID'] = gpg_key_id
       end
-      
+
       # Install dotfiles with Dotdrop
       install_dotfiles
     end
-    
+
     private
-    
+
     # Install dotfiles using dotdrop
     #
-    # @return [Boolean] true if installation succeeded
+    # @return [String, nil] Profile name if installation succeeded, nil otherwise
     def install_dotfiles
-      logger.info("Installing dotfiles with Dotdrop...")
+      logger.info('Installing dotfiles with Dotdrop...')
       profile = @config_manager.get('dotdrop', 'profile', default: 'PUB-MAC-BRASA')
-      
+
       logger.info("Using dotdrop profile: #{profile}")
-      
+
       # Run dotdrop with system to show real-time output
       puts "\n--- Dotdrop Output ---"
-      success = system({ 'GPG_KEY_ID' => ENV['GPG_KEY_ID'] }, 'dotdrop', 'install', '-p', profile)
+      success = system({ 'GPG_KEY_ID' => ENV.fetch('GPG_KEY_ID', nil) }, 'dotdrop', 'install',
+                       '-p', profile)
       puts "--- End Dotdrop Output ---\n"
-      
+
       unless success
-        logger.warn("Dotdrop installation failed with exit code: #{$?.exitstatus}")
-        return false
+        logger.warn("Dotdrop installation failed with exit code: #{$CHILD_STATUS.exitstatus}")
+        return nil
       end
-      
-      logger.info("Dotfiles installed successfully.")
-      true
+
+      logger.info('Dotfiles installed successfully.')
+      profile
     end
   end
 end

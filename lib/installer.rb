@@ -14,7 +14,7 @@ module BootKit
   # Installer handles the main installation process for BootKit
   class Installer
     include BootKit::Helpers
-    
+
     # Initializes the installer with all required components
     #
     # @return [void]
@@ -47,7 +47,7 @@ module BootKit
       @dotfile_manager.setup
       @zgenom_manager.setup
 
-      logger.info("Installation completed successfully!")
+      logger.info('Installation completed successfully!')
     end
   end
 end
