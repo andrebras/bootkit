@@ -7,6 +7,9 @@ bootkit.yml
 .LSOverride
 ._*
 
+# Code editors
+.idea
+
 # Windsurf specific
 .windsurfrules
 
