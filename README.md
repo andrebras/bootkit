@@ -148,7 +148,10 @@ bootkit/
 │   ├── dotfile_manager.rb     # Dotfile management via dotdrop
 │   ├── gpg_manager.rb         # GPG key management
 │   ├── installer.rb           # Main installer class
+│   ├── key_identifier.rb      # GPG key identification functionality
+│   ├── key_importer.rb        # GPG key import functionality
 │   ├── onepassword_manager.rb # 1Password CLI management
+│   ├── secrets_fetcher.rb     # Fetching secrets from 1Password
 │   ├── system_manager.rb      # System compatibility checks
 │   └── zgenom_manager.rb      # Zsh plugin management
 ├── Brewfile                   # Homebrew package definitions
