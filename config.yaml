@@ -11,7 +11,8 @@ variables:
   keyid: "{{@@ env['GPG_KEY_ID'] @@}}"
 actions:
   vim_plug_install: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  tmux_tpm_install: mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  tmux_tpm_install: mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm
+    ~/.tmux/plugins/tpm
 trans_install:
   _decrypt: gpg -q --for-your-eyes-only --no-tty -d {0} > {1}
 trans_update:
@@ -21,15 +22,10 @@ dotfiles:
     src: vimrc
     dst: ~/.vimrc
     actions:
-      - vim_plug_install
+    - vim_plug_install
   f_zshrc:
     src: zshrc
     dst: ~/.zshrc
-  f_zshenv:
-    src: zshenv
-    dst: ~/.zshenv
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_ansible.cfg:
     src: ansible.cfg
     dst: ~/.ansible.cfg
@@ -61,7 +57,7 @@ dotfiles:
     src: tmux.conf
     dst: ~/.tmux.conf
     actions:
-      - tmux_tpm_install
+    - tmux_tpm_install
   f_config:
     src: aws/config
     dst: ~/.aws/config
@@ -144,10 +140,6 @@ dotfiles:
     src: gnupg/gpg-agent.conf
     dst: ~/.gnupg/gpg-agent.conf
     chmod: '600'
-  f_gpg.conf:
-    src: gnupg/gpg.conf
-    dst: ~/.gnupg/gpg.conf
-    chmod: '600'
   d_alacritty:
     src: config/alacritty
     dst: ~/.config/alacritty
@@ -173,12 +165,22 @@ dotfiles:
   d_nvim:
     src: config/nvim
     dst: ~/.config/nvim
+  f_gpg.conf:
+    src: gnupg/gpg.conf
+    dst: ~/.gnupg/gpg.conf
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
+  f_zshenv:
+    src: zshenv
+    dst: ~/.zshenv
+    trans_install: _decrypt
+    trans_update: _encrypt
 profiles:
   PUB-MAC-BRASA:
     dotfiles:
     - f_vimrc
     - f_zshrc
-    - f_zshenv
     - f_ansible.cfg
     - f_asdfrc
     - f_editorconfig
@@ -204,7 +206,6 @@ profiles:
     - f_id_rsa
     - f_id_rsa_circleci
     - f_gpg-agent.conf
-    - f_gpg.conf
     - d_alacritty
     - d_alias
     - d_direnv
@@ -213,3 +214,5 @@ profiles:
     - f_1683049260.json
     - d_lvim
     - d_nvim
+    - f_gpg.conf
+    - f_zshenv
