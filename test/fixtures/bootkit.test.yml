@@ -1,0 +1,9 @@
+onepassword:
+  vault: Test
+  gpg_key_path: GPG/notes
+
+dotdrop:
+  profile: TEST-PROFILE
+
+logging:
+  level: info
