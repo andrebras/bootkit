@@ -18,6 +18,7 @@ A secure, reproducible developer environment bootstrapper for macOS that sets up
 - [Customizing](#customizing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
+- [Acknowledgements](#acknowledgements)
 
 ## Overview
 
@@ -210,3 +211,18 @@ If you encounter issues with GPG key import:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+BootKit integrates with and leverages several excellent tools:
+
+### Open Source Tools
+- [Homebrew](https://brew.sh/) - The missing package manager for macOS
+- [Dotdrop](https://github.com/deadc0de6/dotdrop) - Save your dotfiles once, deploy them everywhere
+- [zgenom](https://github.com/jandamm/zgenom) - A lightweight plugin manager for Zsh
+- [GPG](https://gnupg.org/) - Complete and free implementation of the OpenPGP standard
+
+### Proprietary Tools
+- [1Password CLI](https://1password.com/downloads/command-line/) - Command-line interface for 1Password
+
+I am grateful to the maintainers and contributors of these projects for their excellent work.
