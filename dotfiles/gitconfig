@@ -1,87 +1,26 @@
-[user]
-  name = André Brás
-  email = andrebras@gmail.com
-  signingkey = E7CFA32A
+-----BEGIN PGP MESSAGE-----
 
-[core]
-  excludesfile = /Users/andrebras/.gitignore_global
-  autocrlf = input
-  safecrlf = true
-  editor = vim
-  quotepath = false
-  pager = diff-so-fancy | less --tabs=4 -RF
-  ; commentchar = !
-  ; editor = code --new-window --disable-extensions --wait
-
-[init]
-  defaultBranch = main
-
-[gpg]
-  program = /opt/homebrew/bin/gpg
-
-[commit]
-  gpgsign = true
-
-[pull]
-  rebase = merges
-
-[merge]
-  tool = opendiff
-
-[diff]
-  tool = opendiff
-
-[mergetool]
-  prompt     = false
-  keepBackup = false
-  ; trustExitCode = true
-
-[mergetool "opendiff"]
-  cmd = opendiff $LOCAL $REMOTE -merge $MERGED
-
-[mergetool "vscode"]
-  cmd = code --wait $MERGED
-
-[difftool]
-  prompt = false
-
-[difftool "opendiff"]
-  cmd = opendiff "$LOCAL" "$REMOTE"
-
-[filter "media"]
-  required = true
-  clean    = git media clean %f
-  smudge   = git media smudge %f
-
-[filter "lfs"]
-  process  = git-lfs filter-process
-  required = true
-  clean    = git-lfs clean -- %f
-  mudge    = git-lfs smudge -- %f
-  smudge   = git-lfs smudge -- %f
-
-[color]
-  diff   = auto
-  status = auto
-  branch = auto
-  ui     = auto
-
-[rerere]
-  enabled = true
-
-[column]
-  ui = auto
-
-[branch]
-  sort = -committerdate
-
-[maintenance]
-  repo = /Users/andrebras/Lab/revolution
-  repo = /Users/andrebras/Lab/dpworx
-
-[interactive]
-  diffFilter = diff-so-fancy --patch
-
-[alias]
-  switchback = switch -
-  sb = switchback
+hQEMA7JuHx9yJy8VAQf/br8Z/Db1rUDgjYfOkPmnqjW0FjpvnzVDIKtmVFybY5jP
+iOCjSs8kpFTPWAsoYF+0pFcZtslnfO/ckAom399gSqFMKrhAz6W3fcdIHZfMqReX
+mzTmbITqKdx+jbD5YnKdu7tNOGz9ugZIYF5FC4dlgGvGEsYS/EPqAZg8EXcH+dBD
+B6sT/7H8yJw9tWlVrkVKTyc+0lEIyCHuuGlBlmRZ8NEEswEQ0QfMJv9mbnpCrUuY
+gD2l8/B8PFlUhwkLPO4UZd60UjZUHUipe2thIQv9C8Em1YRmzBuif0sQD26i46fZ
+a9yWFtNNRyxq1ZGftPKT8/PVN/YNQsCmjw6c5LqSZNLpAVluBgje76mMoq33MB7e
+pu2pCJqBAVXzvACWcaNvqeRg4iDvspXwrJiMw7jTTQyhy7ug8w541STeH1dDAhPC
+31CEe2t8xsBZUisU3DaHKNbrjur4GJ7l9BZBL8rFu64l5UXnDNNVyUGhdGTZ5wak
+/uLJl7UwLNl0fAwc9165OE48e+uHKFU7KIbYD4gWRakAL0NCcu46yrMZJpSrN8iF
+7Qv+9zL5IwcQUTmieXsydGvc6NJtBjOh7jjSh1LJMHyqj8Y026sjO/hiQE8CNEpQ
+nee1fKaEi0hcgxotCEE8dcFPFp1Z14u/fM6Ag86MvzTkYBlEsBFn0bc6A+4gNvAI
+qxEbAAuL95RFSrykUxobhXvEcymelUq1cGozrdumruDD+JdS09OZXGv9GEAzyU0o
+ldjHXo2mcwj1RiNsoW1Rdkrst8qpKPR6KoGZe4LjnCayxdo/r+6zg1WYBdTegeMT
+42uRVT64j0xr1FCOVAIYmEox7YYJ3zDacZT88or8ZQ0jNpKWz42g3vXfOIVmaqac
+TLd8Ehz0gVG+iLBcYqwsndWmNwX6KRCgzdQs+5Bx6c1ZtWyxGOY6zolOY5sIyzVB
+Iymio4UA2l7ya1CodM6aipx+irL/8zxagUAsub+huV3GqMebpLDZRcuA0CCwbRyW
+MpYMeKNRSvX5eeDdNqMZQfLAH8P4BDgNcP3FVu5/z7FX7D4ZEXlSrNlYa6MLnRAP
+onsD0nIOnD7p0fOW8Mf9APhKtVm4jIeICmArqZX40x2GWHIKoAe72esjzOyOo1d+
+O2KFUzmWF9//N1tGkGUmUnQ/XNT0uHOGhgxQrX97P/Q7NL5a+6AZGm5wV3adACI/
+s/Z6zjxHVs/7RbATcFPfPs6Dp3WVfxp8P7DARWS2J9MiH/ow5LI8mxnxmQuWenIH
+pQjrucYB95mfHQB1R20g38Q9LFYRb6LQwZR96e7cfS8QNzIDMFWpi/sQdW7Xlja8
+iGg=
+=TUNg
+-----END PGP MESSAGE-----

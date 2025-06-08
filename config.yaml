@@ -41,9 +41,6 @@ dotfiles:
   f_gitignore_global:
     src: gitignore_global
     dst: ~/.gitignore_global
-  f_gitconfig:
-    src: gitconfig
-    dst: ~/.gitconfig
   f_overcommit.yml:
     src: overcommit.yml
     dst: ~/.overcommit.yml
@@ -176,6 +173,11 @@ dotfiles:
     dst: ~/.zshenv
     trans_install: _decrypt
     trans_update: _encrypt
+  f_gitconfig:
+    src: gitconfig
+    dst: ~/.gitconfig
+    trans_install: _decrypt
+    trans_update: _encrypt
 profiles:
   PUB-MAC-BRASA:
     dotfiles:
@@ -186,7 +188,6 @@ profiles:
     - f_editorconfig
     - f_gemrc
     - f_gitignore_global
-    - f_gitconfig
     - f_overcommit.yml
     - f_p10k.zsh
     - f_taskrc
@@ -216,3 +217,4 @@ profiles:
     - d_nvim
     - f_gpg.conf
     - f_zshenv
+    - f_gitconfig
