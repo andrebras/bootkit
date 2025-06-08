@@ -178,6 +178,15 @@ dotfiles:
     dst: ~/.gitconfig
     trans_install: _decrypt
     trans_update: _encrypt
+  f_tool-versions:
+    src: tool-versions
+    dst: ~/.tool-versions
+  f_zsh_history:
+    src: zsh_history
+    dst: ~/.zsh_history
+    chmod: '600'
+    trans_install: _decrypt
+    trans_update: _encrypt
 profiles:
   PUB-MAC-BRASA:
     dotfiles:
@@ -218,3 +227,5 @@ profiles:
     - f_gpg.conf
     - f_zshenv
     - f_gitconfig
+    - f_tool-versions
+    - f_zsh_history
