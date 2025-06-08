@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 cask_args appdir: '/Applications'
 
 brew 'ack'
 brew 'ansible'
 brew 'asdf'
+brew 'autoconf'
+brew 'automake'
 brew 'awscli'
 brew 'bat'
 brew 'diff-so-fancy'
@@ -22,7 +26,9 @@ brew 'libpq'
 brew 'nvim'
 brew 'openssl'
 brew 'pinentry-mac'
+brew 'pkg-config'
 brew 'readline'
+brew 'ruby-build'
 brew 'svn'
 brew 'task'
 brew 'taskwarrior-tui'
