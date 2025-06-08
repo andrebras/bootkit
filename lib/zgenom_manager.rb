@@ -24,20 +24,46 @@ module BootKit
     #                       nil otherwise
     def setup
       logger.info('Setting up Zgenom for Zsh plugin management...')
-      zgenom_dir = File.join(Dir.home, '.zgenom')
+      zgenom_dir = zgenom_directory
 
+      # Return early if already installed
       if installed?
         logger.info('Zgenom is already installed.')
         return zgenom_dir
       end
 
-      logger.info('Installing Zgenom...')
-      unless system("git clone https://github.com/jandamm/zgenom.git #{zgenom_dir}")
-        logger.warn('Failed to install Zgenom. Zsh plugin management may not work correctly.')
-        return nil
-      end
+      # Install Zgenom
+      install_zgenom(zgenom_dir)
+    end
 
-      zgenom_dir
+    # Get the Zgenom installation directory
+    #
+    # @return [String] Path to the Zgenom directory
+    def zgenom_directory
+      File.join(Dir.home, '.zgenom')
+    end
+
+    # Install Zgenom by cloning the repository
+    #
+    # @param zgenom_dir [String] Path to install Zgenom
+    # @return [String, nil] Path to zgenom directory if installation succeeded, nil otherwise
+    def install_zgenom(zgenom_dir)
+      logger.info('Installing Zgenom...')
+
+      if clone_zgenom_repository(zgenom_dir)
+        zgenom_dir
+      else
+        logger.warn('Failed to install Zgenom. Zsh plugin management may not work correctly.')
+        nil
+      end
+    end
+
+    # Clone the Zgenom repository
+    #
+    # @param zgenom_dir [String] Path to install Zgenom
+    # @return [Boolean] True if cloning succeeded, false otherwise
+    def clone_zgenom_repository(zgenom_dir)
+      system("git clone https://github.com/jandamm/zgenom.git #{zgenom_dir}")
     end
   end
 end

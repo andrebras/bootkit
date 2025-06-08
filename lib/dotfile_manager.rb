@@ -51,16 +51,48 @@ module BootKit
     # @return [String, nil] Profile name if installation succeeded, nil otherwise
     def install_dotfiles
       logger.info('Installing dotfiles with Dotdrop...')
-      profile = @config_manager.get('dotdrop', 'profile', default: 'PUB-MAC-BRASA')
+      profile = dotdrop_profile
 
       logger.info("Using dotdrop profile: #{profile}")
 
-      # Run dotdrop with system to show real-time output
+      # Run dotdrop installation
+      success = run_dotdrop_installation(profile)
+
+      # Process installation result
+      process_installation_result(success, profile)
+    end
+
+    # Get the dotdrop profile from configuration
+    #
+    # @return [String] The dotdrop profile name
+    def dotdrop_profile
+      @config_manager.get('dotdrop', 'profile', default: 'PUB-MAC-BRASA')
+    end
+
+    # Run the dotdrop installation command
+    #
+    # @param profile [String] The dotdrop profile to use
+    # @return [Boolean] True if installation succeeded, false otherwise
+    def run_dotdrop_installation(profile)
       puts "\n--- Dotdrop Output ---"
-      success = system({ 'GPG_KEY_ID' => ENV.fetch('GPG_KEY_ID', nil) }, 'dotdrop', 'install',
-                       '-p', profile)
+      success = system(
+        { 'GPG_KEY_ID' => ENV.fetch('GPG_KEY_ID', nil) },
+        'dotdrop',
+        'install',
+        '-p',
+        profile
+      )
       puts "--- End Dotdrop Output ---\n"
 
+      success
+    end
+
+    # Process the result of dotdrop installation
+    #
+    # @param success [Boolean] Whether the installation succeeded
+    # @param profile [String] The dotdrop profile used
+    # @return [String, nil] Profile name if installation succeeded, nil otherwise
+    def process_installation_result(success, profile)
       unless success
         logger.warn("Dotdrop installation failed with exit code: #{$CHILD_STATUS.exitstatus}")
         return nil

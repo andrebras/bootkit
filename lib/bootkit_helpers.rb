@@ -11,10 +11,6 @@ module BootKit
   # This module contains shared functionality like logging, command execution,
   # and filesystem operations used across the BootKit installer.
   module Helpers
-    # Also provide module methods for backward compatibility
-
-    module_function
-
     # Creates a logger instance
     #
     # @param level [Symbol, String] The log level (debug, info, warn, error)
@@ -47,24 +43,49 @@ module BootKit
       # Convert string command to array if needed
       cmd = cmd.split if cmd.is_a?(String)
 
-      # Extract options
+      # Extract options and prepare execution
       env = options[:env] || {}
-      dir = options[:dir]
-      input_data = options[:input]
+      execution_options = prepare_execution_options(options)
 
-      logger.debug("Running command: #{cmd.join(' ')}")
-      logger.debug("With environment: #{env.inspect}") unless env.empty?
-      logger.debug("In directory: #{dir}") if dir
-
-      # Prepare execution options
-      execution_options = {}
-      execution_options[:stdin_data] = input_data if input_data
-      execution_options[:chdir] = dir if dir
+      log_command_execution(cmd, env, options[:dir])
 
       # Execute command
       stdout_str, stderr_str, status = Open3.capture3(env, *cmd, execution_options)
 
-      # Prepare result
+      # Prepare and return result
+      create_result_hash(stdout_str, stderr_str, status)
+    end
+
+    # Prepare execution options for Open3.capture3
+    #
+    # @param options [Hash] Options for command execution
+    # @return [Hash] Execution options for Open3.capture3
+    def prepare_execution_options(options)
+      execution_options = {}
+      execution_options[:stdin_data] = options[:input] if options[:input]
+      execution_options[:chdir] = options[:dir] if options[:dir]
+      execution_options
+    end
+
+    # Log command execution details
+    #
+    # @param cmd [Array<String>] The command to execute
+    # @param env [Hash] Environment variables
+    # @param dir [String, nil] Working directory
+    # @return [void]
+    def log_command_execution(cmd, env, dir)
+      logger.debug("Running command: #{cmd.join(' ')}")
+      logger.debug("With environment: #{env.inspect}") unless env.empty?
+      logger.debug("In directory: #{dir}") if dir
+    end
+
+    # Create result hash from command execution
+    #
+    # @param stdout_str [String] Standard output
+    # @param stderr_str [String] Standard error
+    # @param status [Process::Status] Process status
+    # @return [Hash] Result hash
+    def create_result_hash(stdout_str, stderr_str, status)
       result = {
         stdout: stdout_str,
         stderr: stderr_str,
@@ -72,14 +93,22 @@ module BootKit
         success: status.success?
       }
 
+      log_command_result(status, stderr_str)
+      result
+    end
+
+    # Log the result of a command execution
+    #
+    # @param status [Process::Status] Process status
+    # @param stderr_str [String] Standard error output
+    # @return [void]
+    def log_command_result(status, stderr_str)
       if status.success?
         logger.debug('Command succeeded')
       else
         logger.warn("Command failed with status #{status.exitstatus}")
         logger.debug("STDERR: #{stderr_str}")
       end
-
-      result
     end
 
     # Checks if a command is available in the system
@@ -103,6 +132,15 @@ module BootKit
       end
 
       logger.info("Installing package '#{package}'...")
+      perform_brew_install(package, options)
+    end
+
+    # Perform the actual Homebrew package installation
+    #
+    # @param package [String] The package to install
+    # @param options [String] Additional options for brew install
+    # @return [String, nil] Package name if installation succeeded, nil otherwise
+    def perform_brew_install(package, options)
       cmd = "brew install #{options} #{package}"
 
       unless system(cmd)
@@ -116,18 +154,15 @@ module BootKit
     # Ensures a directory exists, creating it if necessary
     #
     # @param dir [String] The directory path
-    # @return [Boolean] true if the directory exists or was created
+    # @return [Array, false] Array containing the directory path if it exists or was created, nil otherwise
     def ensure_directory(dir)
-      return true if Dir.exist?(dir)
+      return [dir] if Dir.exist?(dir)
 
       logger.info("Creating directory: #{dir}")
-      begin
-        FileUtils.mkdir_p(dir)
-        true
-      rescue StandardError => e
-        logger.error("Failed to create directory #{dir}: #{e.message}")
-        false
-      end
+      FileUtils.mkdir_p(dir)
+    rescue StandardError => e
+      logger.error("Failed to create directory #{dir}: #{e.message}")
+      nil
     end
   end
 end

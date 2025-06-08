@@ -12,7 +12,6 @@ module BootKit
     #
     # @return [void]
     def initialize
-      # No initialization needed currently
     end
 
     # Sets up Homebrew and installs required packages
@@ -41,6 +40,20 @@ module BootKit
       end
 
       logger.info('Installing Homebrew...')
+
+      # Run the installation script
+      install_homebrew_script
+
+      # Configure environment based on architecture
+      configure_homebrew_environment
+
+      logger.info('Homebrew installed successfully.')
+    end
+
+    # Run the Homebrew installation script
+    #
+    # @return [Boolean] True if installation succeeded
+    def install_homebrew_script
       install_cmd = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 
       unless system(install_cmd)
@@ -48,14 +61,18 @@ module BootKit
         exit(1)
       end
 
-      # Configure Homebrew environment based on architecture
+      true
+    end
+
+    # Configure Homebrew environment based on system architecture
+    #
+    # @return [void]
+    def configure_homebrew_environment
       if `uname -m`.strip == 'arm64'
         system('eval "$(/opt/homebrew/bin/brew shellenv)"')
       else
         system('eval "$(/usr/local/bin/brew shellenv)"')
       end
-
-      logger.info('Homebrew installed successfully.')
     end
 
     # Updates Homebrew and installs packages from Brewfile

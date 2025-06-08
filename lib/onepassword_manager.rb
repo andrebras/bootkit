@@ -38,8 +38,26 @@ module BootKit
       end
 
       logger.info('1Password CLI (op) not found, installing...')
-      result = run_command('brew install --cask 1password-cli')
 
+      # Install using Homebrew
+      install_result = install_1password_cli_via_brew
+
+      # Process installation result
+      process_installation_result(install_result)
+    end
+
+    # Install 1Password CLI using Homebrew
+    #
+    # @return [Hash] Result of the installation command
+    def install_1password_cli_via_brew
+      run_command('brew install --cask 1password-cli')
+    end
+
+    # Process the result of 1Password CLI installation
+    #
+    # @param result [Hash] Result of the installation command
+    # @return [void]
+    def process_installation_result(result)
       unless result[:success]
         logger.error('Failed to install 1Password CLI.')
         exit(1)

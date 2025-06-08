@@ -35,6 +35,23 @@ class TestConfigManager < Minitest::Test
   end
 
   def test_custom_config_path
+    # Create a custom config file and manager
+    custom_config_path = create_temp_config_file
+    custom_manager = BootKit::ConfigManager.new(custom_config_path)
+
+    # Test that it loaded the custom config
+    assert_equal 'custom_value', custom_manager.get('custom', 'setting')
+
+    # Clean up
+    FileUtils.remove_entry File.dirname(custom_config_path)
+  end
+
+  private
+
+  # Creates a temporary config file for testing
+  #
+  # @return [String] Path to the temporary config file
+  def create_temp_config_file
     # Create a different config file
     custom_config = {
       'custom' => {
@@ -46,13 +63,6 @@ class TestConfigManager < Minitest::Test
     custom_config_path = File.join(temp_dir, 'custom_config.yml')
     File.write(custom_config_path, custom_config.to_yaml)
 
-    # Create config manager with custom path
-    custom_manager = BootKit::ConfigManager.new(custom_config_path)
-
-    # Test that it loaded the custom config
-    assert_equal 'custom_value', custom_manager.get('custom', 'setting')
-
-    # Clean up
-    FileUtils.remove_entry temp_dir
+    custom_config_path
   end
 end

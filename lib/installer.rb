@@ -23,9 +23,10 @@ module BootKit
       @system_manager = SystemManager.new
       @brew_manager = BrewManager.new
       @onepassword_manager = OnePasswordManager.new
+      @zgenom_manager = ZgenomManager.new
+
       @gpg_manager = GpgManager.new(@config_manager)
       @dotfile_manager = DotfileManager.new(@config_manager, @gpg_manager)
-      @zgenom_manager = ZgenomManager.new
     end
 
     # Runs the complete installation process for BootKit
