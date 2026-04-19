@@ -63,7 +63,7 @@ module BootKit
     # @param zgenom_dir [String] Path to install Zgenom
     # @return [Boolean] True if cloning succeeded, false otherwise
     def clone_zgenom_repository(zgenom_dir)
-      system("git clone https://github.com/jandamm/zgenom.git #{zgenom_dir}")
+      system('git', 'clone', 'https://github.com/jandamm/zgenom.git', zgenom_dir)
     end
   end
 end

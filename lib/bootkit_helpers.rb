@@ -4,6 +4,8 @@
 require 'open3'
 require 'logger'
 require 'fileutils'
+require 'shellwords'
+require 'shellwords'
 
 module BootKit
   # Helper module providing common utilities for BootKit components
@@ -41,7 +43,7 @@ module BootKit
     # @return [Hash] Result hash with :stdout, :stderr, :status, and :success keys
     def run_command(cmd, options = {})
       # Convert string command to array if needed
-      cmd = cmd.split if cmd.is_a?(String)
+      cmd = Shellwords.split(cmd) if cmd.is_a?(String)
 
       # Extract options and prepare execution
       env = options[:env] || {}
@@ -116,7 +118,7 @@ module BootKit
     # @param command [String] The command to check
     # @return [Boolean] true if the command is available, false otherwise
     def command_exists?(command)
-      system("which #{command} > /dev/null 2>&1")
+      system('which', command, out: File::NULL, err: File::NULL)
     end
 
     # Installs a Homebrew package if not already installed
@@ -126,7 +128,7 @@ module BootKit
     # @return [String, nil] Package name if the package is installed or installation succeeded,
     #                       nil otherwise
     def install_brew_package(package, options = '')
-      if system("brew list #{package} &>/dev/null")
+      if system('brew', 'list', package, out: File::NULL, err: File::NULL)
         logger.info("Package '#{package}' is already installed.")
         return package
       end
@@ -141,9 +143,7 @@ module BootKit
     # @param options [String] Additional options for brew install
     # @return [String, nil] Package name if installation succeeded, nil otherwise
     def perform_brew_install(package, options)
-      cmd = "brew install #{options} #{package}"
-
-      unless system(cmd)
+      unless system('brew', 'install', *options.split, package)
         logger.error("Failed to install package '#{package}'.")
         return nil
       end

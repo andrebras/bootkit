@@ -6,59 +6,18 @@ require 'json'
 module BootKit
   # Module for retrieving secrets from password stores
   module SecretsFetcher
-    # Sign in to 1Password CLI
+    # Check authentication status with 1Password CLI
     #
-    # @return [Boolean] True if sign-in was successful, false otherwise
+    # @return [Boolean] True if authenticated, false otherwise
     def sign_in_to_1password
-      return true if already_signed_in_to_1password?
-
-      logger.info('Signing in to 1Password...')
-      account_details = fetch_1password_account_details
-      return false unless account_details
-
-      perform_1password_signin(account_details)
-    end
-
-    # Check if already signed in to 1Password
-    #
-    # @return [Boolean] True if already signed in, false otherwise
-    def already_signed_in_to_1password?
-      result = run_command(%w[op signin --list])
-      if result[:success] && !result[:stdout].to_s.strip.empty?
-        logger.info('Already signed in to 1Password')
-        return true
-      end
-      false
-    end
-
-    # Fetch 1Password account details from config
-    #
-    # @return [Hash, nil] Account details or nil if not configured
-    def fetch_1password_account_details
-      account = @config_manager.get('onepassword', 'account')
-      email = @config_manager.get('onepassword', 'email')
-
-      unless account && email
-        logger.error('1Password account or email not configured')
-        return nil
-      end
-
-      { account: account, email: email }
-    end
-
-    # Perform the actual 1Password sign-in
-    #
-    # @param account_details [Hash] Account details with :account and :email keys
-    # @return [Boolean] True if sign-in was successful, false otherwise
-    def perform_1password_signin(account_details)
-      result = run_command(['op', 'signin', '--account', account_details[:account], account_details[:email]])
+      result = run_command(%w[op whoami])
 
       if result[:success]
-        logger.info('Successfully signed in to 1Password')
+        logger.info('Authenticated with 1Password')
         return true
       end
 
-      logger.error('Failed to sign in to 1Password')
+      logger.error('Not authenticated with 1Password. Please sign in via the 1Password desktop app.')
       false
     end
 
@@ -66,18 +25,14 @@ module BootKit
     #
     # @return [String, nil] The GPG key or nil if not found
     def gpg_key_from_1password
-      # Sign in to 1Password
       return nil unless sign_in_to_1password
 
-      # Get config
       config = config_from_1password
       return nil unless config
 
-      # Get item from 1Password
       item_data = item_from_1password(config[:vault], config[:gpg_key_path])
       return nil unless item_data
 
-      # Extract GPG key from item
       gpg_key_from_item(item_data)
     end
 
@@ -110,7 +65,6 @@ module BootKit
       result = run_command(['op', 'item', 'get', item_name, '--vault', vault, '--format', 'json'])
       return nil unless result[:success]
 
-      # Parse JSON response
       begin
         JSON.parse(result[:stdout])
       rescue JSON::ParserError
@@ -124,7 +78,6 @@ module BootKit
     # @param item_data [Hash] The parsed 1Password item data
     # @return [String, nil] The GPG key or nil if not found
     def gpg_key_from_item(item_data)
-      # Try to find the notes field in the item data
       notes_field = find_notes_field(item_data)
 
       if notes_field && notes_field['value']

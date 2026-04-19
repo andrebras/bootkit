@@ -10,9 +10,10 @@ config:
 variables:
   keyid: "{{@@ env['GPG_KEY_ID'] @@}}"
 actions:
-  vim_plug_install: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  tmux_tpm_install: mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm
-    ~/.tmux/plugins/tpm
+  vim_plug_install: curl -fLo ~/.vim/autoload/plug.vim --create-dirs 
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  tmux_tpm_install: mkdir -p ~/.tmux/plugins && git clone 
+    https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 trans_install:
   _decrypt: gpg -q --for-your-eyes-only --no-tty -d {0} > {1}
 trans_update:
@@ -109,12 +110,6 @@ dotfiles:
     chmod: '600'
     trans_install: _decrypt
     trans_update: _encrypt
-  f_ec2_andrebras_mooxoo.pem:
-    src: ssh/ec2_andrebras_mooxoo.pem
-    dst: ~/.ssh/ec2_andrebras_mooxoo.pem
-    chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_id_github:
     src: ssh/id_github
     dst: ~/.ssh/id_github
@@ -137,9 +132,6 @@ dotfiles:
     src: gnupg/gpg-agent.conf
     dst: ~/.gnupg/gpg-agent.conf
     chmod: '600'
-  d_alacritty:
-    src: config/alacritty
-    dst: ~/.config/alacritty
   d_alias:
     src: config/alias
     dst: ~/.config/alias
@@ -156,9 +148,6 @@ dotfiles:
   f_1683049260.json:
     src: config/karabiner/assets/complex_modifications/1683049260.json
     dst: ~/.config/karabiner/assets/complex_modifications/1683049260.json
-  d_lvim:
-    src: config/lvim
-    dst: ~/.config/lvim
   d_nvim:
     src: config/nvim
     dst: ~/.config/nvim
@@ -187,6 +176,9 @@ dotfiles:
     chmod: '600'
     trans_install: _decrypt
     trans_update: _encrypt
+  f_wezterm.lua:
+    src: wezterm.lua
+    dst: ~/.wezterm.lua
 profiles:
   PUB-MAC-BRASA:
     dotfiles:
@@ -211,21 +203,19 @@ profiles:
     - f_id_rsa.pub
     - f_ssh_config
     - f_circleci_rsa
-    - f_ec2_andrebras_mooxoo.pem
     - f_id_github
     - f_id_rsa
     - f_id_rsa_circleci
     - f_gpg-agent.conf
-    - d_alacritty
     - d_alias
     - d_direnv
     - f_karabiner.json
     - f_1683048690.json
     - f_1683049260.json
-    - d_lvim
     - d_nvim
     - f_gpg.conf
     - f_zshenv
     - f_gitconfig
     - f_tool-versions
     - f_zsh_history
+    - f_wezterm.lua

@@ -30,7 +30,6 @@ module BootKit
     def setup
       logger.info('Setting up dotdrop for dotfile management...')
 
-      # Get GPG key ID from GPG manager
       gpg_key_id = @gpg_manager.key_id
 
       if gpg_key_id.nil? || gpg_key_id.empty?
@@ -40,7 +39,6 @@ module BootKit
         ENV['GPG_KEY_ID'] = gpg_key_id
       end
 
-      # Install dotfiles with Dotdrop
       install_dotfiles
     end
 
@@ -54,11 +52,8 @@ module BootKit
       profile = dotdrop_profile
 
       logger.info("Using dotdrop profile: #{profile}")
-
-      # Run dotdrop installation
       success = run_dotdrop_installation(profile)
 
-      # Process installation result
       process_installation_result(success, profile)
     end
 
@@ -66,7 +61,14 @@ module BootKit
     #
     # @return [String] The dotdrop profile name
     def dotdrop_profile
-      @config_manager.get('dotdrop', 'profile', default: 'PUB-MAC-BRASA')
+      profile = @config_manager.get('dotdrop', 'profile')
+
+      if profile.nil? || profile.to_s.strip.empty?
+        logger.error('dotdrop.profile is not set in bootkit.yml — cannot install dotfiles')
+        exit(1)
+      end
+
+      profile
     end
 
     # Run the dotdrop installation command
@@ -75,6 +77,7 @@ module BootKit
     # @return [Boolean] True if installation succeeded, false otherwise
     def run_dotdrop_installation(profile)
       puts "\n--- Dotdrop Output ---"
+
       success = system(
         { 'GPG_KEY_ID' => ENV.fetch('GPG_KEY_ID', nil) },
         'dotdrop',
@@ -82,8 +85,8 @@ module BootKit
         '-p',
         profile
       )
-      puts "--- End Dotdrop Output ---\n"
 
+      puts "--- End Dotdrop Output ---\n"
       success
     end
 

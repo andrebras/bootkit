@@ -68,10 +68,13 @@ module BootKit
     #
     # @return [void]
     def configure_homebrew_environment
-      if `uname -m`.strip == 'arm64'
-        system('eval "$(/opt/homebrew/bin/brew shellenv)"')
-      else
-        system('eval "$(/usr/local/bin/brew shellenv)"')
+      brew_bin = `uname -m`.strip == 'arm64' ? '/opt/homebrew/bin/brew' : '/usr/local/bin/brew'
+      return unless File.executable?(brew_bin)
+
+      `#{brew_bin} shellenv`.each_line do |line|
+        next unless (m = line.match(/^export (\w+)="(.*)"/))
+
+        ENV[m[1]] = m[2]
       end
     end
 

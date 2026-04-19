@@ -66,12 +66,5 @@ module BootKit
       logger.info('1Password CLI installed successfully.')
     end
 
-    # Check if a command exists in the system PATH
-    #
-    # @param command [String] The command to check
-    # @return [Boolean] true if the command exists, false otherwise
-    def command_exists?(command)
-      system("which #{command} > /dev/null 2>&1")
-    end
   end
 end
