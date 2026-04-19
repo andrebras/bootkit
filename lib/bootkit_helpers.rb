@@ -5,7 +5,6 @@ require 'open3'
 require 'logger'
 require 'fileutils'
 require 'shellwords'
-require 'shellwords'
 
 module BootKit
   # Helper module providing common utilities for BootKit components
