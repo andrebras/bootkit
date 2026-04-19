@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'fileutils'
 require_relative 'bootkit_helpers'
 require_relative 'config_manager'
 require_relative 'system_manager'
@@ -54,8 +55,26 @@ module BootKit
       @gpg_manager.setup
       @dotfile_manager.setup
       @zgenom_manager.setup
+      setup_bootkit_cli
 
       logger.info('Installation completed successfully!')
+    end
+
+    private
+
+    def setup_bootkit_cli
+      local_bin = File.expand_path('~/.local/bin')
+      link      = File.join(local_bin, 'bootkit')
+      target    = File.expand_path('bin/bootkit')
+
+      FileUtils.mkdir_p(local_bin)
+      if File.symlink?(link) && File.readlink(link) == target
+        logger.info('bootkit CLI already linked')
+        return
+      end
+      File.unlink(link) if File.exist?(link) || File.symlink?(link)
+      File.symlink(target, link)
+      logger.info('Linked bootkit CLI → ~/.local/bin/bootkit')
     end
   end
 end

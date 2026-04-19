@@ -1,0 +1,53 @@
+#!/bin/bash
+set -e
+SCRIPT="$(ruby -e 'puts File.realpath(ARGV[0])' "$0")"
+BOOTKIT_DIR="$(dirname "$(dirname "$SCRIPT")")"
+cd "$BOOTKIT_DIR"
+
+export GPG_KEY_ID=$(grep 'key_id:' bootkit.yml | awk '{print $2}')
+PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','profile')")
+
+get_key() {
+  ruby -ryaml -e "
+c = YAML.load_file('config.yaml')
+m = c['dotfiles'].find { |k,v| File.expand_path(v['dst'].to_s) == File.expand_path('$1') }
+puts m ? m[0] : (STDERR.puts 'Not managed: $1'; exit 1)
+"
+}
+
+CMD="$1"; shift || true
+case "$CMD" in
+  install)
+    exec "$BOOTKIT_DIR/bin/install" ;;
+  diff)
+    if [ -n "$1" ]; then
+      dotdrop compare -p "$PROFILE" -c config.yaml -C "$1"
+    else
+      dotdrop compare -p "$PROFILE" -c config.yaml
+    fi ;;
+  save)
+    if [ -n "$1" ]; then
+      dotdrop update -f -p "$PROFILE" -c config.yaml "$1"
+    else
+      dotdrop update -f -p "$PROFILE" -c config.yaml
+    fi ;;
+  restore)
+    if [ -n "$1" ]; then
+      dotdrop install -f -p "$PROFILE" -c config.yaml "$(get_key "$1")"
+    else
+      dotdrop install -f -p "$PROFILE" -c config.yaml
+    fi ;;
+  add)
+    dotdrop import -p "$PROFILE" -c config.yaml "$1" ;;
+  list)
+    dotdrop files -p "$PROFILE" -c config.yaml ;;
+  *)
+    echo "Usage: bootkit <command> [file]"
+    echo ""
+    echo "  install           Full machine setup"
+    echo "  diff   [file]     What's different? (all or one file)"
+    echo "  save   [file]     I edited on my machine → save to repo"
+    echo "  restore [file]    Repo version → push to my machine"
+    echo "  add    <file>     Start tracking a new file"
+    echo "  list              Show all tracked files" ;;
+esac

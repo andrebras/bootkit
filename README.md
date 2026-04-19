@@ -300,33 +300,40 @@ mas "1Password", id: 1333542190
 
 ## Dotdrop Management
 
-BootKit uses [Dotdrop](https://github.com/deadc0de6/dotdrop) to manage your dotfiles. Dotdrop allows you to store your dotfiles once and deploy them across multiple machines with profile-based configurations.
+BootKit uses [Dotdrop](https://github.com/deadc0de6/dotdrop) to manage dotfiles. Files are stored in `dotfiles/` and mapped to their home directory destinations in `config.yaml`. Sensitive files (SSH keys, AWS credentials, GPG config, etc.) are GPG-encrypted at rest.
 
-### Key Features
+### Daily Commands
 
-- **Profile-based configuration**: Define different profiles for different machines (e.g., work laptop, personal desktop)
-- **Template support**: Use Jinja2 templates in your dotfiles for dynamic configuration
-- **Encrypted files**: Store sensitive dotfiles encrypted (using GPG) in your repository
-- **Transformations**: Apply transformations to files during installation
+Use the `bootkit` CLI (available after `./bin/install`):
 
-### Common Dotdrop Commands
+| Command | What it does |
+|---|---|
+| `bootkit diff` | See what's different between repo and machine |
+| `bootkit diff ~/.vimrc` | Diff a single file |
+| `bootkit save ~/.vimrc` | I edited on my machine → save to repo |
+| `bootkit restore ~/.vimrc` | Repo version → push to my machine |
+| `bootkit add ~/.newfile` | Start tracking a new file |
+| `bootkit list` | Show all tracked files |
 
-```bash
-# Compare your local dotfiles with the repository
-dotdrop compare
+### Under the Hood (raw dotdrop commands)
 
-# Install/update dotfiles from the repository
-dotdrop install
+If you need to use dotdrop directly, first export your profile and GPG key:
 
-# Update the repository with your local dotfiles
-dotdrop update
+```sh
+export GPG_KEY_ID=$(grep 'key_id:' bootkit.yml | awk '{print $2}')
+PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','profile')")
 ```
 
-### Resources
+| `bootkit` command | dotdrop equivalent |
+|---|---|
+| `bootkit diff` | `dotdrop compare -p $PROFILE -c config.yaml` |
+| `bootkit diff ~/.vimrc` | `dotdrop compare -p $PROFILE -c config.yaml -C ~/.vimrc` |
+| `bootkit save ~/.vimrc` | `dotdrop update -f -p $PROFILE -c config.yaml ~/.vimrc` |
+| `bootkit restore ~/.vimrc` | `dotdrop install -f -p $PROFILE -c config.yaml f_vimrc` |
+| `bootkit add ~/.newfile` | `dotdrop import -p $PROFILE -c config.yaml ~/.newfile` |
+| `bootkit list` | `dotdrop files -p $PROFILE -c config.yaml` |
 
-- [Dotdrop Documentation](https://dotdrop.readthedocs.io/)
-- [Dotdrop GitHub Repository](https://github.com/deadc0de6/dotdrop)
-- Configuration file: `config.yaml` in your BootKit directory
+→ [Full dotdrop documentation](https://dotdrop.readthedocs.io/en/latest/)
 
 ## GPG Key Setup with 1Password
 
