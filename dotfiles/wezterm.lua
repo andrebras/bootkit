@@ -8,9 +8,16 @@ config.audible_bell = "Disabled"
 -- Do not ask for confirmation when closing windows/tabs
 config.window_close_confirmation = "NeverPrompt"
 
+-- wezterm terminfo supports RGB (true color) natively
+--   tempfile=$(mktemp) &&
+--     curl -fsSL https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo -o "$tempfile" &&
+--     tic -x -o ~/.terminfo "$tempfile" &&
+--     rm "$tempfile"
+config.term = 'wezterm'
+
 -- Font style
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
-config.font_size = 14.5
+config.font_size = 15
 config.bold_brightens_ansi_colors = false
 
 -- Blinking block cursor
@@ -27,31 +34,30 @@ config.cursor_blink_ease_out = "Constant"
 config.hide_mouse_cursor_when_typing = true
 
 -- Minimal tab bar
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Slight transparency, aesthetic without harming readability
-config.window_background_opacity = 1.0
+config.window_background_opacity = 1
 
 -- macOS normal window decorations
 config.window_decorations = "TITLE | RESIZE"
 
--- Colors: automatic switching between Tokyo Night / Day
+-- Colors: automatic switching between dark and light
 if wezterm.gui then
-  local appearance = wezterm.gui.get_appearance()
+  local function scheme_for_appearance(appearance)
+    if appearance:find("Dark") then
+      return "Catppuccin Macchiato"
+    else
+      return "Catppuccin Latte"
+    end
+  end
 
-  config.color_scheme = appearance:find("Dark")
-    and "Tokyo Night"
-    or "Tokyo Night Day"
+  config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
 
   wezterm.on("window-config-reloaded", function(window)
     local overrides = window:get_config_overrides() or {}
-    local a = wezterm.gui.get_appearance()
-
-    overrides.color_scheme = a:find("Dark")
-      and "Tokyo Night"
-      or "Tokyo Night Day"
-
+    overrides.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
     window:set_config_overrides(overrides)
   end)
 end
