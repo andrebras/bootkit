@@ -1,5 +1,5 @@
 set nocompatible " use vim defaults
-filetype on
+filetype plugin indent on
 
 "
 " vim-plug
@@ -7,46 +7,38 @@ filetype on
 call plug#begin('~/.vim/bundle')
 
 Plug 'dense-analysis/ale'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'mileszs/ack.vim'
 Plug 'mkitt/tabline.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-
-" language specific plugins
-" Plug 'elixir-editors/vim-elixir'
-
-" fuzzy finder
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
-
-"" themes
-"Plug 'rose-pine/vim'
-"Plug 'dracula/vim', { 'name': 'dracula' }
 
 call plug#end()
 
 set signcolumn=yes
 set completeopt=menu,menuone,noselect
+set complete+=.,w,b,u,t  " standard completion sources
+set pumheight=10         " limit popup height
 
 "
 " cursor
 "
 let &t_EI = "\e[1 q" " normal, blinking block (default)
 let &t_SI = "\e[6 q" " insert, steady bar (xterm)
+let &t_SR = "\e[4 q" " replace, steady underline
 
 "
-" basic.settings
+" basic settings
 "
-syntax on " turn syntax highlighting on by default
+syntax on         " turn syntax highlighting on by default
+set termguicolors " use 24-bit color
 
 "
 " shell
 "
-" set shell=/bin/zsh
-set shell=/opt/homebrew/bin/fish
+set shell=/bin/zsh
 
 set encoding=utf-8 " set default encoding to UTF-8
 set scrolloff=3    " keep 3 lines when scrolling
@@ -57,6 +49,7 @@ set showcmd    " display incomplete commands
 set number     " show line numbers
 set ruler      " show the current row and column
 set splitbelow " show split window on the bottom
+set hidden     " allow switching buffers without saving
 
 "
 " folding
@@ -67,18 +60,15 @@ set foldlevelstart=6
 "
 " backup, swap and undo
 "
-set backupdir-=.
-set backupdir^=~/tmp,/tmp
-
 set noswapfile
 set nobackup
-set nowb
+set undofile
+set undodir=~/.vim/undo
 
 "
 " spaces and tabs
 "
 set nowrap
-set linebreak
 set autoindent
 set smarttab
 set tabstop=2
@@ -102,7 +92,6 @@ set listchars+=trail:·    " show trailing spaces as ·
 " visual assist
 "
 set cursorline     " highlight current line
-set colorcolumn=0  " disable line length limit column
 
 "
 " status line
@@ -128,10 +117,9 @@ set ignorecase " ignore case when searching
 set smartcase  " no ignorecase if Uppercase char present
 
 "
-" anoying features
+" annoying features
 "
-set visualbell " turn off error beep/flash
-set errorbells " turn off visual bell
+set belloff=all
 
 "
 " wildmenu
@@ -150,18 +138,8 @@ set wildignore+=*.swp,*~,._*
 "
 " colors & themes
 "
-colorscheme delek
-
-" when on, uses |highlight-guifg| and |highlight-guibg| attributes in the
-" terminal (thus using 24-bit color).
-" set termguicolors
-
-let g:lightline = { 'colorscheme': 'one' }
-
-"
-" Ack / Ag
-"
-let g:ackprg = 'ag --vimgrep'
+colorscheme default
+highlight SignColumn ctermbg=NONE " transparent sign column
 
 "
 " ALE
@@ -188,13 +166,6 @@ let g:ale_fix_on_save = 1
 let g:ale_rust_cargo_use_check = 1
 
 "
-" auto commands
-"
-
-" remove trailling white spaces (when not using ale)
-" autocmd BufWritePre * %s/\s\+$//e
-
-"
 " key mappings
 "
 let mapleader = ' '
@@ -202,14 +173,10 @@ let mapleader = ' '
 "
 " FZF fuzzy finder
 "
-
-" fzf disable preview window
-" let g:fzf_preview_window = ['right:50%', 'ctrl-/']
-
-" nmap <Leader>f :GFiles<CR>
-" nmap <Leader>ff :Files<CR>
-" nmap <Leader>b :Buffers<CR>
-" nmap <Leader>h :History<CR>
+nmap <Leader>f :GFiles<CR>
+nmap <Leader>ff :Files<CR>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>h :History<CR>
 
 "
 " EasyAlign
@@ -220,26 +187,7 @@ xmap ga <Plug>(EasyAlign)
 nmap <leader>hs :set hlsearch! hlsearch?<CR>  " toggle hlsearch with <leader>hs
 nmap <silent> <leader>cd :lcd %:h<CR>         " cd to the directory containing the file in the buffer
 
-" map up and down
+" native completion navigation
 inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
 inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-" Use <C-j> for trigger completion with characters ahead and navigate
-" NOTE: There's always complete item selected by default, you may want to enable
-" no select by `"suggest.noselect": true` in your configuration file
-inoremap <silent><expr> <C-j>
-      \ coc#pum#visible() ? coc#pum#next(1):
-      \ CheckBackspace() ? "\<ESC>" :
-      \ coc#refresh()
-
-inoremap <expr><C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" Make <TAB> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm()
-      \: "\<C-g>u\<TAB>\<c-r>=coc#on_enter()\<CR>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"

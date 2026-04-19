@@ -11,6 +11,9 @@ fi
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
+# Signal true color support to terminal applications (e.g. Chalk/Claude Code)
+export COLORTERM=truecolor
+
 #
 # Editor
 #
@@ -38,6 +41,9 @@ path=(
   /usr/local/{bin,sbin}
   $path
 )
+
+# fpath additions must come before compinit (called by prezto completion below)
+fpath=(/Users/andrebras/.docker/completions $fpath)
 
 #
 # zgenom
@@ -98,17 +104,14 @@ fi
 # homebrew
 eval $(/opt/homebrew/bin/brew shellenv)
 
+# fzf
+source <(fzf --zsh)
+
 # Zoxide
 eval "$(zoxide init zsh)"
 
 # Hook direnv into zsh
 eval "$(direnv hook zsh)"
-
-# Docker CLI completions.
-fpath=(/Users/andrebras/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 
 # asdf
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
