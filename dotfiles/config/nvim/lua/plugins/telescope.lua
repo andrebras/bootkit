@@ -3,6 +3,7 @@ return {
   opts = {
     pickers = {
       live_grep = { theme = "ivy" },
+      grep_string = { theme = "ivy" },
     },
   },
 }

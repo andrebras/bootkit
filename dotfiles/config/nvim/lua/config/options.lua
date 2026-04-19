@@ -10,10 +10,6 @@ vim.opt.conceallevel = 0
 -- Shows relative line numbers instead of absolute
 vim.opt.relativenumber = true
 
--- Makes code folding work based on indentation levels
--- vim.opt.foldlevelstart = 6
-vim.opt.foldmethod = "indent"
-
 -- Ensures consistent tab width in insert mode
 vim.opt.softtabstop = 2
 
@@ -26,3 +22,5 @@ vim.opt.listchars = {
   nbsp = "·",
   trail = "·",
 }
+
+vim.opt.undofile = true
