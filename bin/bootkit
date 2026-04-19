@@ -4,7 +4,8 @@ SCRIPT="$(ruby -e 'puts File.realpath(ARGV[0])' "$0")"
 BOOTKIT_DIR="$(dirname "$(dirname "$SCRIPT")")"
 cd "$BOOTKIT_DIR"
 
-export GPG_KEY_ID=$(grep 'key_id:' bootkit.yml | awk '{print $2}')
+GPG_KEY_ID=$(grep 'key_id:' bootkit.yml | awk '{print $2}')
+export GPG_KEY_ID
 PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','profile')")
 
 get_key() {

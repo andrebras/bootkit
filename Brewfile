@@ -7,6 +7,7 @@ tap 'anomalyco/tap'
 # --- Shell & Terminal ---
 brew 'direnv'
 brew 'htop'
+brew 'shellcheck'
 brew 'tmux'
 brew 'tmux-sessionizer'
 brew 'zoxide' # smarter cd that ranks dirs by frequency
