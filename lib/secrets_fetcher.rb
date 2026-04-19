@@ -9,7 +9,7 @@ module BootKit
     # Check authentication status with 1Password CLI
     #
     # @return [Boolean] True if authenticated, false otherwise
-    def sign_in_to_1password
+    def signed_in_to_1password?
       result = run_command(%w[op whoami])
 
       if result[:success]
@@ -25,7 +25,7 @@ module BootKit
     #
     # @return [String, nil] The GPG key or nil if not found
     def gpg_key_from_1password
-      return nil unless sign_in_to_1password
+      return nil unless signed_in_to_1password?
 
       config = config_from_1password
       return nil unless config

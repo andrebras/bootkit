@@ -11,8 +11,7 @@ module BootKit
     # Initializes the Homebrew manager
     #
     # @return [void]
-    def initialize
-    end
+    def initialize; end
 
     # Sets up Homebrew and installs required packages
     #
@@ -56,12 +55,10 @@ module BootKit
     def install_homebrew_script
       install_cmd = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 
-      unless system(install_cmd)
-        logger.error('Failed to install Homebrew.')
-        exit(1)
-      end
+      return if system(install_cmd)
 
-      true
+      logger.error('Failed to install Homebrew.')
+      exit(1)
     end
 
     # Configure Homebrew environment based on system architecture

@@ -36,7 +36,7 @@ module BootKit
       logger.info('Setting up GPG key from 1Password...')
 
       # Verify dependencies
-      return nil unless verify_dependencies
+      return nil unless dependencies_available?
 
       # Get GPG key from 1Password
       gpg_key = gpg_key_from_1password
@@ -49,7 +49,7 @@ module BootKit
     # Verify that required dependencies are installed
     #
     # @return [Boolean] True if all dependencies are installed, false otherwise
-    def verify_dependencies
+    def dependencies_available?
       # Check if GPG is installed
       unless command_exists?('gpg')
         logger.error('GPG is not installed')

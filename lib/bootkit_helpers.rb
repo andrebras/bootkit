@@ -24,7 +24,7 @@ module BootKit
 
       if level
         level = level.to_s.upcase
-        @logger.level = Logger.const_get(level) if Logger.constants.include?(level.to_sym)
+        @logger.level = Logger.const_get(level) if Logger.const_defined?(level.to_sym)
       end
 
       @logger

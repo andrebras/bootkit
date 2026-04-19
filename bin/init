@@ -26,31 +26,31 @@ def bold(text)
 end
 
 def prompt(question, default = nil)
-  print blue("#{question}")
+  print blue(question.to_s)
   print " [#{default}]" if default
-  print ": "
+  print ': '
   answer = gets.chomp
   answer.empty? && default ? default : answer
 end
 
-def confirm(question)
-  answer = prompt("#{question} (y/n)", "n").downcase
-  answer == 'y' || answer == 'yes'
+def confirmed?(question)
+  answer = prompt("#{question} (y/n)", 'n').downcase
+  %w[y yes].include?(answer)
 end
 
 # Main script
 puts bold("\n=== BootKit Initialization Wizard ===\n")
 puts "This script will help you set up BootKit for your own use.\n\n"
 
-puts yellow("⚠️  WARNING ⚠️")
+puts yellow('⚠️  WARNING ⚠️')
 puts "This will remove Andre's personal dotfiles from this repository."
-puts "The following will be cleaned up:"
-puts "  • All files in dotfiles/ directory"
-puts "  • Existing bootkit.yml (if present)"
+puts 'The following will be cleaned up:'
+puts '  • All files in dotfiles/ directory'
+puts '  • Existing bootkit.yml (if present)'
 puts "  • Existing config.yaml will be reset to a minimal template\n\n"
 
-unless confirm("Do you want to continue?")
-  puts red("Initialization cancelled.")
+unless confirmed?('Do you want to continue?')
+  puts red('Initialization cancelled.')
   exit 1
 end
 
@@ -65,27 +65,27 @@ config_yaml = File.join(bootkit_root, 'config.yaml')
 # Remove all dotfiles
 if Dir.exist?(dotfiles_dir)
   FileUtils.rm_rf(Dir.glob("#{dotfiles_dir}/*"))
-  puts "  ✓ Cleared dotfiles/ directory"
+  puts '  ✓ Cleared dotfiles/ directory'
 else
   FileUtils.mkdir_p(dotfiles_dir)
-  puts "  ✓ Created dotfiles/ directory"
+  puts '  ✓ Created dotfiles/ directory'
 end
 
 # Remove bootkit.yml if it exists
 if File.exist?(bootkit_yml)
   FileUtils.rm(bootkit_yml)
-  puts "  ✓ Removed existing bootkit.yml"
+  puts '  ✓ Removed existing bootkit.yml'
 end
 
 # Step 2: Gather user information
 puts "\n#{green('Step 2:')} Gathering your configuration..."
 puts "Please answer the following questions:\n\n"
 
-vault_name = prompt("1Password vault name", "Dotfiles")
-gpg_key_path = prompt("GPG key path in 1Password (e.g., 'GPG Key/notes')", "GPG Key/notes")
-profile_name = prompt("Dotdrop profile name (usually your hostname)", `hostname`.chomp.strip)
-gpg_key_id = prompt("GPG key ID (optional, press Enter to skip)", "~")
-log_level = prompt("Logging level (debug/info/warn/error)", "info")
+vault_name = prompt('1Password vault name', 'Dotfiles')
+gpg_key_path = prompt("GPG key path in 1Password (e.g., 'GPG Key/notes')", 'GPG Key/notes')
+profile_name = prompt('Dotdrop profile name (usually your hostname)', `hostname`.chomp.strip)
+gpg_key_id = prompt('GPG key ID (optional, press Enter to skip)', '~')
+log_level = prompt('Logging level (debug/info/warn/error)', 'info')
 
 # Step 3: Generate bootkit.yml
 puts "\n#{green('Step 3:')} Generating bootkit.yml..."
@@ -107,7 +107,7 @@ bootkit_config = {
 }
 
 File.write(bootkit_yml, bootkit_config.to_yaml)
-puts "  ✓ Created bootkit.yml"
+puts '  ✓ Created bootkit.yml'
 
 # Step 4: Generate minimal config.yaml for Dotdrop
 puts "\n#{green('Step 4:')} Generating minimal config.yaml for Dotdrop..."
@@ -145,29 +145,29 @@ puts "  ✓ Created config.yaml with profile '#{profile_name}'"
 
 # Step 5: Display next steps
 puts "\n#{green('✓ Initialization complete!')}\n\n"
-puts bold("Next steps:")
+puts bold('Next steps:')
 puts "  1. #{blue('Add your dotfiles')} to the dotfiles/ directory"
-puts "     Example: cp ~/.zshrc dotfiles/zshrc"
-puts ""
+puts '     Example: cp ~/.zshrc dotfiles/zshrc'
+puts ''
 puts "  2. #{blue('Configure Dotdrop')} in config.yaml to map your dotfiles"
 puts "     • Add entries to 'dotfiles:' section"
 puts "     • Add them to your profile's 'dotfiles:' list"
-puts "     • See: https://dotdrop.readthedocs.io/en/latest/"
-puts ""
+puts '     • See: https://dotdrop.readthedocs.io/en/latest/'
+puts ''
 puts "  3. #{blue('Customize your Brewfile')} with packages you want installed"
 puts "     Edit: #{File.join(bootkit_root, 'Brewfile')}"
-puts ""
+puts ''
 puts "  4. #{blue('Run the installer')} to deploy on this machine"
-puts "     ./bin/install"
-puts ""
+puts '     ./bin/install'
+puts ''
 puts "  5. #{blue('Commit your changes')} to your own Git repository"
-puts "     git add ."
+puts '     git add .'
 puts "     git commit -m 'Initialize my BootKit'"
-puts "     git remote set-url origin <your-repo-url>"
-puts "     git push"
-puts ""
+puts '     git remote set-url origin <your-repo-url>'
+puts '     git push'
+puts ''
 puts "#{yellow('Note:')} Store your GPG key in 1Password (vault: '#{vault_name}')"
 puts "       as a Secure Note at the path: #{gpg_key_path}"
-puts ""
+puts ''
 puts "For detailed documentation, see: #{File.join(bootkit_root, 'README.md')}"
-puts ""
+puts ''

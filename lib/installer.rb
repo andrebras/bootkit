@@ -20,21 +20,14 @@ module BootKit
     #
     # @return [void]
     def initialize
-      @config_manager  = ConfigManager.new
-      @gpg_manager     = GpgManager.new(@config_manager)
-      @dotfile_manager = DotfileManager.new(@config_manager, @gpg_manager)
-
+      @config_manager      = ConfigManager.new
+      @gpg_manager         = GpgManager.new(@config_manager)
+      @dotfile_manager     = DotfileManager.new(@config_manager, @gpg_manager)
       @system_manager      = SystemManager.new
       @brew_manager        = BrewManager.new
       @zgenom_manager      = ZgenomManager.new
       @onepassword_manager = OnePasswordManager.new
-
-      log_level = @config_manager.get('logging', 'level', default: 'info')
-
-      [@system_manager, @brew_manager, @onepassword_manager, @zgenom_manager,
-       @gpg_manager, @dotfile_manager, self].each do |m|
-        m.logger(log_level)
-      end
+      configure_logging
     end
 
     # Runs the complete installation process for BootKit
@@ -68,13 +61,21 @@ module BootKit
       target    = File.expand_path('bin/bootkit')
 
       FileUtils.mkdir_p(local_bin)
-      if File.symlink?(link) && File.readlink(link) == target
-        logger.info('bootkit CLI already linked')
-        return
-      end
+      return logger.info('bootkit CLI already linked') if correct_symlink?(link, target)
+
       File.unlink(link) if File.exist?(link) || File.symlink?(link)
       File.symlink(target, link)
       logger.info('Linked bootkit CLI → ~/.local/bin/bootkit')
+    end
+
+    def correct_symlink?(link, target)
+      File.symlink?(link) && File.readlink(link) == target
+    end
+
+    def configure_logging
+      log_level = @config_manager.get('logging', 'level', default: 'info')
+      [@system_manager, @brew_manager, @onepassword_manager, @zgenom_manager,
+       @gpg_manager, @dotfile_manager, self].each { |m| m.logger(log_level) }
     end
   end
 end

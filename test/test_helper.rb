@@ -42,7 +42,7 @@ module TestHelpers
   end
 
   # Run a block that might call exit, and catch the exit
-  def assert_exits(&block)
+  def assert_exits(&)
     # Save original exit method
     original_exit = Kernel.method(:exit)
 
@@ -53,7 +53,7 @@ module TestHelpers
       end
 
       # Run the block and expect it to raise our custom exception
-      assert_raises(RuntimeError, &block)
+      assert_raises(RuntimeError, &)
     ensure
       # Restore original exit method
       Kernel.define_singleton_method(:exit, original_exit)
