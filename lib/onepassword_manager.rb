@@ -65,6 +65,5 @@ module BootKit
 
       logger.info('1Password CLI installed successfully.')
     end
-
   end
 end
