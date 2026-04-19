@@ -1,0 +1,10 @@
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  Exclude:
+    - "dotfiles/**/*"
+    - "vendor/**/*"
+
+# Code has YARD docs throughout but not plain-text class descriptions — cop checks for the latter
+Style/Documentation:
+  Enabled: false
