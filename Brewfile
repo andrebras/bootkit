@@ -2,77 +2,124 @@
 
 cask_args appdir: '/Applications'
 
-brew 'ack'
-brew 'ansible'
-brew 'asdf'
-brew 'autoconf'
-brew 'automake'
-brew 'awscli'
-brew 'bat'
-brew 'cmake'
-brew 'diff-so-fancy'
+tap 'anomalyco/tap'
+
+# --- Shell & Terminal ---
 brew 'direnv'
-brew 'dotdrop'
+brew 'htop'
+brew 'tmux'
+brew 'tmux-sessionizer'
+brew 'zoxide' # smarter cd that ranks dirs by frequency
+
+# --- Editors ---
+brew 'neovim'
+brew 'vim'
+
+# --- Search & File Tools ---
+brew 'ack'
+brew 'bat'
 brew 'eza'
 brew 'fzf'
-brew 'ghostscript'
+brew 'ripgrep'
+brew 'the_silver_searcher' # ag command, fast code search
+brew 'tlrc' # tldr pages client (simplified man pages)
+brew 'tree'
+
+# --- Git ---
+brew 'diff-so-fancy'
+brew 'gh'
 brew 'git'
-brew 'gpg'
-brew 'htop-osx'
-brew 'imagemagick'
+brew 'lazygit'
+brew 'tig' # terminal UI for browsing git history
+
+# --- Cloud & Kubernetes ---
+brew 'awscli'
+brew 'docker-credential-helper-ecr'
+brew 'flyctl'
 brew 'k9s'
 brew 'kubectx'
 brew 'lazydocker'
-brew 'lazygit'
+
+# --- Build & Libraries ---
+brew 'autoconf'
+brew 'automake'
+brew 'cmake'
 brew 'libpq'
-brew 'nvim'
+brew 'luarocks'
 brew 'openssl'
-brew 'pinentry-mac'
-brew 'pkg-config'
+brew 'pkgconf'
 brew 'readline'
 brew 'svn'
+brew 'v8'
+
+# --- Security & Dotfiles ---
+brew 'asdf'
+brew 'dotdrop'
+brew 'gnupg'
+brew 'pinentry-mac'
+
+# --- AI ---
+brew 'kimi-cli'
+brew 'anomalyco/tap/opencode'
+
+# --- Task Management ---
 brew 'task'
 brew 'taskwarrior-tui'
-brew 'the_silver_searcher'
-brew 'tig'
-brew 'tldr'
-brew 'tmux'
-brew 'tree'
-brew 'v8'
-brew 'vim'
+
+# --- Media & Net ---
+brew 'ghostscript'
+brew 'imagemagick'
 brew 'wget'
 brew 'yarn'
-brew 'zoxide'
 
-cask 'alacritty'
-cask 'appcleaner'
-cask 'arc'
-cask 'arq'
-cask 'bartender'
-cask 'dbeaver-community'
-cask 'discord'
-cask 'docker'
+# --- Fonts ---
 cask 'font-caskaydia-cove-nerd-font'
 cask 'font-fira-code-nerd-font'
 cask 'font-jetbrains-mono-nerd-font'
 cask 'font-sauce-code-pro-nerd-font'
-cask 'grammarly-desktop'
-cask 'hey-desktop'
-cask 'istat-menus'
-cask 'karabiner-elements'
-cask 'licecap'
-cask 'ngrok'
+
+# --- Security & VPN ---
+cask '1password'
+cask '1password-cli'
 cask 'nordvpn'
-cask 'notion'
-cask 'postman'
-cask 'rectangle'
-cask 'slack'
-cask 'spotify'
-cask 'the-unarchiver'
-cask 'tomatobar'
-cask 'tunein'
 cask 'tunnelblick'
+
+# --- Browsers ---
+cask 'arc'
+cask 'google-chrome'
+
+# --- Development ---
+cask 'bruno' # API client (Postman alternative)
+cask 'dbeaver-community'
+cask 'docker-desktop'
+cask 'github'
+cask 'ngrok'
+cask 'visual-studio-code'
+cask 'wezterm'
+
+# --- Communication ---
+cask 'discord'
+cask 'hey-desktop'
+cask 'slack'
+
+# --- Productivity ---
+cask 'bartender'
+cask 'grammarly-desktop'
+cask 'karabiner-elements'
+cask 'raycast'
+cask 'rectangle'
+
+# --- AI ---
+cask 'claude'
+
+# --- Entertainment ---
+cask 'spotify'
+cask 'tunein'
+
+# --- Utilities ---
+cask 'appcleaner'
+cask 'arq'
+cask 'licecap'
+cask 'the-unarchiver'
 cask 'tuxera-ntfs'
 cask 'typora'
-cask 'visual-studio-code'
-cask 'windsurf'
