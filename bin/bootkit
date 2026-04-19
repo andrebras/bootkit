@@ -42,6 +42,12 @@ case "$CMD" in
   list)
     dotdrop files -p "$PROFILE" -c config.yaml ;;
   *)
+    echo " ____              _   _  ___ _   "
+    echo "| __ )  ___   ___ | |_| |/ (_) |_ "
+    echo "|  _ \ / _ \ / _ \| __| ' /| | __|"
+    echo "| |_) | (_) | (_) | |_| . \| | |_ "
+    echo "|____/ \___/ \___/ \__|_|\_\_|\__|"
+    echo ""
     echo "Usage: bootkit <command> [file]"
     echo ""
     echo "  install           Full machine setup"

@@ -1,5 +1,13 @@
 # Bootkit
 
+```
+ ____              _   _  ___ _   
+| __ )  ___   ___ | |_| |/ (_) |_ 
+|  _ \ / _ \ / _ \| __| ' /| | __|
+| |_) | (_) | (_) | |_| . \| | |_ 
+|____/ \___/ \___/ \__|_|\_\_|\__|
+```
+
 A secure, reproducible developer environment bootstrapper for macOS.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
