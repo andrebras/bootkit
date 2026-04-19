@@ -41,6 +41,11 @@ case "$CMD" in
     dotdrop import -p "$PROFILE" -c config.yaml "$1" ;;
   list)
     dotdrop files -p "$PROFILE" -c config.yaml ;;
+  remove)
+    KEY=$(get_key "$1")
+    SRC=$(ruby -ryaml -e "puts YAML.load_file('config.yaml').dig('dotfiles', '$KEY', 'src')")
+    dotdrop remove -f -p "$PROFILE" -c config.yaml "$1"
+    rm -f "$BOOTKIT_DIR/dotfiles/$SRC" ;;
   *)
     echo " ____              _   _  ___ _   "
     echo "| __ )  ___   ___ | |_| |/ (_) |_ "
@@ -55,5 +60,6 @@ case "$CMD" in
     echo "  save   [file]     I edited on my machine → save to repo"
     echo "  restore [file]    Repo version → push to my machine"
     echo "  add    <file>     Start tracking a new file"
+    echo "  remove <file>     Stop tracking a file"
     echo "  list              Show all tracked files" ;;
 esac

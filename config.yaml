@@ -170,12 +170,6 @@ dotfiles:
   f_tool-versions:
     src: tool-versions
     dst: ~/.tool-versions
-  f_zsh_history:
-    src: zsh_history
-    dst: ~/.zsh_history
-    chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_wezterm.lua:
     src: wezterm.lua
     dst: ~/.wezterm.lua
@@ -217,5 +211,4 @@ profiles:
     - f_zshenv
     - f_gitconfig
     - f_tool-versions
-    - f_zsh_history
     - f_wezterm.lua
