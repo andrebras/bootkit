@@ -1,25 +1,14 @@
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+# set gpg tty to the current terminal
+export GPG_TTY=$(tty)
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-#
-# Locale
-#
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-
-# Signal true color support to terminal applications (e.g. Chalk/Claude Code)
-export COLORTERM=truecolor
-
-#
-# Editor
-#
-export EDITOR='vim'
-export VISUAL='vim'
-export PAGER='less'
 
 #
 # Paths
@@ -36,14 +25,8 @@ cdpath=(
   $cdpath
 )
 
-# Set the list of directories that Zsh searches for programs.
-path=(
-  /usr/local/{bin,sbin}
-  $path
-)
-
 # fpath additions must come before compinit (called by prezto completion below)
-fpath=(/Users/andrebras/.docker/completions $fpath)
+fpath=(/Users/andrebras/.docker/completions ~/.grok/completions/zsh $fpath)
 
 #
 # zgenom
@@ -92,17 +75,14 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Source all files inside zsh folder
-alias="$HOME/.config/alias"
+# Source all files inside the alias folder
+alias_dir="$HOME/.config/alias"
 
-if [[ -a "${alias}" ]]; then
-  for file in ${alias}/**; do
+if [[ -d "${alias_dir}" ]]; then
+  for file in ${alias_dir}/**/*(.N); do
     source "$file"
   done
 fi
-
-# homebrew
-eval $(/opt/homebrew/bin/brew shellenv)
 
 # fzf
 source <(fzf --zsh)
@@ -112,8 +92,3 @@ eval "$(zoxide init zsh)"
 
 # Hook direnv into zsh
 eval "$(direnv hook zsh)"
-
-# asdf
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
