@@ -70,8 +70,6 @@ dotfiles:
   f_zprofile:
     src: zprofile
     dst: ~/.zprofile
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_vault_pass:
     src: vault_pass
     dst: ~/.vault_pass
@@ -160,8 +158,6 @@ dotfiles:
   f_zshenv:
     src: zshenv
     dst: ~/.zshenv
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_gitconfig:
     src: gitconfig
     dst: ~/.gitconfig
