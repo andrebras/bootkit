@@ -1,14 +1,2 @@
------BEGIN PGP MESSAGE-----
-
-hQEMA7JuHx9yJy8VAQf/ekYZjnnFSmfJhHDdCHQ77BxrAmuts/GUBIXt4SYoV5/S
-Cmt+cOrTnf4SxGa9r4+qfh79kpbBLaowcBTbXQ00T2oU4jxO6KFf3b7ATlBjB3/m
-2ajo3sCXTytGsvl+E75g+qXG+gQOdVR6mZibgopFi6hyl59AXq2zxbdsRpAS+Zu8
-9W0Tpy9BJMvcwolSEJhsJ5OY104EHtXe+J+ivElKpcZDKepBoSZsi9ZIl+EGuijT
-NBXvYDvydRY6eYSKOPzpD3H7ph0rVOWd8fvW9oubaJkssjkVvAgd1XwH3whcHofV
-8USemtdjmnrZJ60fp+d+p5psWKA7HuV6059+cwcwUdLACAHw50mVzI0vMeUysX/e
-EIlX34jkyl4VEfruu8LKvcENaJ4UJePRKldlWD08tic6kTm5YK1J/2dV+EGKRNhs
-GjpTpvzinl8tdACp4q13jQawATUebbur8PokFAay9QCKCUqj7UiL4ln2pISrJS0l
-esbS6EQlJfU6TxPqt3aM8jmQWjSTGs77pQ59BudOF0bmdMjwRlQ6BmHo2Ec00mVn
-lfUoRC4stTms4c+hI5VPmvDs8P8hmMB7BhaY/9gSKIFFDMKrAf/28nVj
-=xu+S
------END PGP MESSAGE-----
+source "$HOME/.config/zsh/env.zsh"
+source "$HOME/.config/zsh/path.zsh"

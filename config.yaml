@@ -173,6 +173,9 @@ dotfiles:
   f_wezterm.lua:
     src: wezterm.lua
     dst: ~/.wezterm.lua
+  d_zsh:
+    src: config/zsh
+    dst: ~/.config/zsh
 profiles:
   PUB-MAC-BRASA:
     dotfiles:
@@ -212,3 +215,4 @@ profiles:
     - f_gitconfig
     - f_tool-versions
     - f_wezterm.lua
+    - d_zsh

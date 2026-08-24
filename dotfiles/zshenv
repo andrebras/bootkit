@@ -1,19 +1,4 @@
------BEGIN PGP MESSAGE-----
-
-hQEMA7JuHx9yJy8VAQf/Q9JhgPeTQ+/vQRvPod1Oq6Z60KTH9x+3Tc9PKR3g5YAx
-aPpq56nWMguiDKGWbmk/DM3598DpoaBd5BF+rQEerYr/YdTaUnYcegbdt3uPvhVj
-9G1UA+xJT6dZQQZYt2wPK7FjMCNk25LlUZjx2kGq0RI0IE4DKh2U2ZkusIfuju4P
-y4Hja7T/XH8qQKlxSr3eB7yAEA6MMFgbMFCAZqEpfyK6meagX/4ZQ/7pB7zecwfj
-WwoaJfCBR3ywy2a3yDka0JFNqX+zuVsTN77L8WV4rrLKC/cUD23/OBz6l2gTc3ac
-Vrg9TqRSs2sYLVYm3GByFVDzGLLdOLkekpRuEQIKxtLA2QEkw/wxg0ps6AWcZHS3
-cDiSJQRyvDMMAPptRH0O6kefdOzhSEaTkJyJYY8M23D7mwuvRITTDyOZJbrOQqWv
-5BSerrsr7dI+ywRTHk0iPC0z6jDcyblJKSBy3IzLG+iDIMkjrzklRGYy/LDZMxFd
-SAr1mswlrrTrsdkYcz3TI79ScPy7+TZSU/mqYHTGFnaYsMnC16HrKQUqo2afBBtj
-aTWxzXEs4h4gVHHejGp486OCtMuJsknpmNh1P3tjaUHZIXyf00+XodF97KNjrGIr
-5TmjrJYF40Hklf8f6oE00APrZT2R41it/Cqc3LSHuJMnODdP0PuW5QxTr5N8v3Gx
-rL8RuI7Z72YXbnFZfHO6TEw4d6BPCAkw08vB5oo+S0pwoFc6bBLo44CQTvJTbmSo
-9C09bu1V4i6RjlrVZY52OvckTxiPM9Za4GluyEMlvFvBPCgaia5XPNMdbymzFS5H
-oJHEDlVBmcplLp/eLhXfwkGO2m/xF/eKeuhOKjrUxVrrKjujxckAidEFEpdxSf3N
-omzoYOx2tdKlVp0=
-=Luhu
------END PGP MESSAGE-----
+# Ensure that a non-login, non-interactive shell has a defined environment.
+if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
