@@ -17,7 +17,7 @@ config.term = 'wezterm'
 
 -- Font style
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
-config.font_size = 15
+config.font_size = 13
 config.bold_brightens_ansi_colors = false
 
 -- Blinking block cursor
@@ -43,24 +43,27 @@ config.window_background_opacity = 1
 -- macOS normal window decorations
 config.window_decorations = "TITLE | RESIZE"
 
+-- Color scheme
+config.color_scheme = "Catppuccin Latte"
+
 -- Colors: automatic switching between dark and light
-if wezterm.gui then
-  local function scheme_for_appearance(appearance)
-    if appearance:find("Dark") then
-      return "Catppuccin Macchiato"
-    else
-      return "Catppuccin Latte"
-    end
-  end
-
-  config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
-
-  wezterm.on("window-config-reloaded", function(window)
-    local overrides = window:get_config_overrides() or {}
-    overrides.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
-    window:set_config_overrides(overrides)
-  end)
-end
+-- if wezterm.gui then
+--   local function scheme_for_appearance(appearance)
+--     if appearance:find("Dark") then
+--       return "Catppuccin Macchiato"
+--     else
+--       return "Catppuccin Latte"
+--     end
+--   end
+--
+--   config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
+--
+--   wezterm.on("window-config-reloaded", function(window)
+--     local overrides = window:get_config_overrides() or {}
+--     overrides.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
+--     window:set_config_overrides(overrides)
+--   end)
+-- end
 
 -- Maximize the first window when the GUI starts
 local mux = wezterm.mux

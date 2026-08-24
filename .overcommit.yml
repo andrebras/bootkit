@@ -6,3 +6,8 @@ PreCommit:
     enabled: true
     include:
       - 'bin/bootkit'
+
+CommitMsg:
+  # Conflicts with the conventional-commit prefixes used in this repo
+  CapitalizedSubject:
+    enabled: false
