@@ -1,16 +1,5 @@
------BEGIN PGP MESSAGE-----
+Include config.d/*
 
-hQEMA7JuHx9yJy8VAQf/T7NxDiEsji13EIcqv4eNTxUCG+KFSTHKUvXaR2FiPlUy
-Z8eoj2j2r7ijnwTLgq4jSGcPjRkpWq73jNIUF8f2R8Q5G3tc5g7MsRHdsL3aABPO
-LMCwfDKZeq858rVoR+casZrPNtlLafpSgOXOfwcWwxIQvQSrp+FuMNi39wUqUguj
-r4g5OitTUXOSBvI12FBYG+cHaeUn5jIjFEPn4To4hlxlxpt03cQmKiE42I0tJcWq
-hKe8bi82Tv+rfiGt2NARgpKb8C7xWues3u67vK6rK/PnthlcyP5X1sNeORMtTa1K
-VQhliLiv4FYsHf2xld0WC5uMRcRxeEP//e5++0mm99LAbQFqNNO4S87FBdqGx/Hp
-za2fBMax5EamE6/9LYjwoIyySx0s/v1IL5deyyFtgwEG0Yfp36fyyn8Roz1vy0xr
-58TGD/bikuFxHXaH9P2WIFBo9tu/QPlK0dWhxbz9iiMhYHEu67+k4QBPSVIArEFO
-YEAQphGoArqAJpuhxzzmYh3YuM7U5Uype5KQGQWG+CUSkEi4E77ENAF9bB1teKV6
-hLw1WV7RAPy595Pd5lhh+3mqexF5q0O0fVR65fICpu56x4uEoQlmDa0EV1d0uY0v
-oh+HpCwY9bVm/qtj8KCRL+3teN4hmnDRFd+Z+RaPREBhCVPG/RD3p9U0lw3a24BC
-rtj4/R6Vi//Ijy8Dkb+1RNKUwrs6lbcJNI082vptmm5ML0+ao+Eh3KEh2gqbcNA=
-=yfYP
------END PGP MESSAGE-----
+# 1Password SSH agent - manages SSH keys for all hosts
+Host *
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
