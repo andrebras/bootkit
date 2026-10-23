@@ -20,6 +20,7 @@ A secure, reproducible developer environment bootstrapper for macOS.
 - [Configuration Files](#configuration-files)
 - [Dotdrop Management](#dotdrop-management)
 - [1Password Setup](#1password-setup)
+- [Manual steps on a new machine](#manual-steps-on-a-new-machine)
 - [Directory Structure](#directory-structure)
 - [License](#license)
 
@@ -127,6 +128,16 @@ BootKit keeps no secrets. SSH keys live in 1Password, and the 1Password SSH agen
 1. Install the 1Password app (it is in the `Brewfile`) and sign in.
 2. In 1Password, go to Settings → Developer and turn on **Use the SSH agent**.
 3. Commits are signed with an SSH key from 1Password: `gitconfig` sets `gpg.format = ssh` and uses 1Password's `op-ssh-sign`, and `~/.ssh/allowed_signers` lets Git verify those signatures.
+
+## Manual steps on a new machine
+
+A few files are kept outside the repo on purpose and must be set up by hand:
+
+1. **Private SSH hosts.** `~/.ssh/config` includes every file in `~/.ssh/config.d/`. Copy your host files there from a safe place; they are not tracked by BootKit.
+2. **Machine-specific Git settings.** `~/.gitconfig` includes `~/.gitconfig.local`, which is not tracked. Create it for settings that only apply to one machine, for example background maintenance:
+   ```bash
+   git maintenance register --config-file ~/.gitconfig.local
+   ```
 
 ## Directory Structure
 
