@@ -43,10 +43,9 @@ case "$CMD" in
   list)
     dotdrop files -p "$PROFILE" -c config.yaml ;;
   remove)
-    KEY=$(get_key "$1")
-    SRC=$(ruby -ryaml -e 'puts YAML.load_file("config.yaml").dig("dotfiles", ARGV[0], "src")' "$KEY")
-    dotdrop remove -f -p "$PROFILE" -c config.yaml "$1"
-    rm -f "$BOOTKIT_DIR/dotfiles/$SRC" ;;
+    # dotdrop removes the entry and deletes its file or directory from dotfiles/
+    get_key "$1" > /dev/null
+    dotdrop remove -f -p "$PROFILE" -c config.yaml "$1" ;;
   *)
     echo " ____              _   _  ___ _   "
     echo "| __ )  ___   ___ | |_| |/ (_) |_ "
