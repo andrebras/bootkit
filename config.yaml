@@ -100,8 +100,6 @@ dotfiles:
     src: ssh/config
     dst: ~/.ssh/config
     chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_gpg-agent.conf:
     src: gnupg/gpg-agent.conf
     dst: ~/.gnupg/gpg-agent.conf
