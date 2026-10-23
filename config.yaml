@@ -169,6 +169,9 @@ dotfiles:
   f_wezterm.lua:
     src: wezterm.lua
     dst: ~/.wezterm.lua
+  f_ghostty_config:
+    src: config/ghostty/config
+    dst: ~/.config/ghostty/config
   d_zsh:
     src: config/zsh
     dst: ~/.config/zsh
@@ -211,4 +214,5 @@ profiles:
     - f_gitconfig
     - f_tool-versions
     - f_wezterm.lua
+    - f_ghostty_config
     - d_zsh

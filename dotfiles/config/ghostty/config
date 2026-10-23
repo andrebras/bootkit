@@ -1,0 +1,45 @@
+# Disable annoying audible bell
+bell-features = no-title,no-system,no-attention
+
+# Do not ask for confirmation when closing windows/tabs
+confirm-close-surface = false
+
+# Ghostty automatically advertises the correct terminal type.
+# No equivalent to WezTerm's `term = 'wezterm'` is required.
+
+# Font style
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 13
+
+# Ghostty does not have an equivalent to `bold_brightens_ansi_colors`.
+
+# Blinking block cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Prevent shell integration from changing the cursor shape.
+shell-integration-features = no-cursor
+
+# Ghostty does not allow configuring cursor blink rate or easing.
+
+# Hide mouse cursor while typing
+mouse-hide-while-typing = true
+
+# Ghostty uses native macOS tabs.
+# There is no equivalent to `use_fancy_tab_bar`.
+# Tabs are automatically hidden when only one tab exists.
+
+# No transparency
+background-opacity = 1.0
+
+# macOS native window decorations
+window-decoration = auto
+
+# Native macOS title bar
+macos-titlebar-style = native
+
+# Automatically switch between dark and light themes
+theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
+
+# Maximize new windows on startup
+maximize = true
