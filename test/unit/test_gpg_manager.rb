@@ -3,6 +3,7 @@
 
 require_relative '../test_helper'
 require 'gpg_manager'
+require 'stringio'
 
 class TestGpgManager < Minitest::Test
   include TestHelpers
@@ -56,6 +57,17 @@ class TestGpgManager < Minitest::Test
     @gpg_manager.logger.level = Logger::FATAL
 
     assert_nil @gpg_manager.gpg_key_from_item({ 'fields' => [] })
+  end
+
+  def test_failed_import_does_not_log_key_content
+    output = StringIO.new
+    @gpg_manager.instance_variable_set(:@logger, Logger.new(output, level: Logger::DEBUG))
+    @gpg_manager.define_singleton_method(:key_id_from_content) { |_key| 'ABCD1234' }
+    @gpg_manager.define_singleton_method(:key_already_imported?) { |_id| false }
+    @gpg_manager.define_singleton_method(:perform_key_import) { |_key| { success: false, stderr: '' } }
+
+    assert_nil @gpg_manager.import_gpg_key('SECRET-KEY-MATERIAL')
+    refute_includes output.string, 'SECRET-KEY-MATERIAL'
   end
 
   def test_dependencies_available_without_gpg

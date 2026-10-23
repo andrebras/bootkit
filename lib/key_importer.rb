@@ -25,7 +25,7 @@ module BootKit
       result = perform_key_import(gpg_key)
 
       # Process import result
-      process_import_result(result, key_id_value, gpg_key)
+      process_import_result(result, key_id_value)
     end
 
     # Perform the actual key import
@@ -40,9 +40,8 @@ module BootKit
     #
     # @param result [Hash] The result of the import command
     # @param key_id_value [String] The key ID
-    # @param gpg_key [String] The GPG key content
     # @return [String, nil] The key ID if import was successful, nil otherwise
-    def process_import_result(result, key_id_value, gpg_key)
+    def process_import_result(result, key_id_value)
       if result[:success] && key_imported?(result[:stderr])
         logger.info("Successfully imported GPG key #{key_id_value}")
         ENV['GPG_KEY_ID'] = key_id_value
@@ -50,7 +49,6 @@ module BootKit
       end
 
       logger.error('Failed to import GPG key')
-      logger.debug("GPG key content: #{gpg_key[0..100]}...")
       nil
     end
 
