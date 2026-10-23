@@ -47,7 +47,6 @@ if ! zgenom saved; then
 
   zgenom prezto 'git:log:oneline' format '_git_log_oneline_format'
   zgenom prezto 'git:log:brief'   format '_git_log_brief_format'
-  zgenom prezto 'ssh:load' identities 'id_rsa' 'id_github'
 
   # prezto and modules
   zgenom prezto

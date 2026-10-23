@@ -99,7 +99,7 @@ Dotdrop configuration. Maps dotfiles in `dotfiles/` to their destinations on dis
 Defines all packages, casks, and fonts to install via Homebrew.
 
 ### `dotfiles/`
-Your actual config files. Sensitive files (SSH keys, AWS credentials, GPG config, etc.) are stored GPG-encrypted.
+Your actual config files. Sensitive files (AWS credentials, GPG config, etc.) are stored GPG-encrypted. SSH private keys are not stored here: they live in 1Password and are served by the 1Password SSH agent.
 
 ## Dotdrop Management
 
