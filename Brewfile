@@ -56,8 +56,6 @@ brew 'v8'
 # --- Security & Dotfiles ---
 brew 'asdf'
 brew 'dotdrop'
-brew 'gnupg'
-brew 'pinentry-mac'
 
 # --- AI ---
 brew 'kimi-cli'
