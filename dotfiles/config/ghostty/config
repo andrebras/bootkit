@@ -39,7 +39,7 @@ window-decoration = auto
 macos-titlebar-style = native
 
 # Automatically switch between dark and light themes
-theme = dark:Catppuccin Macchiato,light:Catppuccin Latte
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 
 # Maximize new windows on startup
 maximize = true
