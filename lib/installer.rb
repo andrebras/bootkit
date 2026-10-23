@@ -16,6 +16,9 @@ module BootKit
   class Installer
     include BootKit::Helpers
 
+    # Repository root, so brew bundle, dotdrop and the CLI link work from any cwd
+    ROOT_DIR = File.expand_path('..', __dir__)
+
     # Initializes the installer with all required components
     #
     # @return [void]
@@ -42,23 +45,44 @@ module BootKit
     #
     # @return [void]
     def run
+      Dir.chdir(ROOT_DIR)
       @system_manager.setup
       @brew_manager.setup
       @onepassword_manager.setup
-      @gpg_manager.setup
-      @dotfile_manager.setup
-      @zgenom_manager.setup
+      failed = failed_steps
       setup_bootkit_cli
 
-      logger.info('Installation completed successfully!')
+      report_result(failed)
     end
 
     private
 
+    # Runs the steps that return nil on failure and collects the failed ones
+    #
+    # @return [Array<String>] names of the steps that failed
+    def failed_steps
+      {
+        'GPG import' => @gpg_manager,
+        'Dotfiles' => @dotfile_manager,
+        'Zgenom' => @zgenom_manager
+      }.filter_map { |name, manager| name if manager.setup.nil? }
+    end
+
+    # Logs the installation outcome and exits non-zero if any step failed
+    #
+    # @param failed [Array<String>] names of the steps that failed
+    # @return [void]
+    def report_result(failed)
+      return logger.info('Installation completed successfully!') if failed.empty?
+
+      logger.error("Installation finished with failed steps: #{failed.join(', ')}")
+      exit(1)
+    end
+
     def setup_bootkit_cli
       local_bin = File.expand_path('~/.local/bin')
       link      = File.join(local_bin, 'bootkit')
-      target    = File.expand_path('bin/bootkit')
+      target    = File.join(ROOT_DIR, 'bin', 'bootkit')
 
       FileUtils.mkdir_p(local_bin)
       return logger.info('bootkit CLI already linked') if correct_symlink?(link, target)
