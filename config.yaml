@@ -115,8 +115,6 @@ dotfiles:
   f_gitconfig:
     src: gitconfig
     dst: ~/.gitconfig
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_tool-versions:
     src: tool-versions
     dst: ~/.tool-versions
