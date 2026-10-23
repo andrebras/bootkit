@@ -56,19 +56,9 @@ dotfiles:
   f_zprofile:
     src: zprofile
     dst: ~/.zprofile
-  f_circleci_rsa.pub:
-    src: ssh/circleci_rsa.pub
-    dst: ~/.ssh/circleci_rsa.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_id_github.pub:
     src: ssh/id_github.pub
     dst: ~/.ssh/id_github.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
-  f_id_rsa_circleci.pub:
-    src: ssh/id_rsa_circleci.pub
-    dst: ~/.ssh/id_rsa_circleci.pub
     trans_install: _decrypt
     trans_update: _encrypt
   f_id_rsa.pub:
@@ -144,9 +134,7 @@ profiles:
     - f_taskrc
     - f_tmux.conf
     - f_zprofile
-    - f_circleci_rsa.pub
     - f_id_github.pub
-    - f_id_rsa_circleci.pub
     - f_id_rsa.pub
     - f_ssh_config
     - f_gpg-agent.conf
