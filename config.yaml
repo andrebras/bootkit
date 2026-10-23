@@ -59,13 +59,9 @@ dotfiles:
   f_id_github.pub:
     src: ssh/id_github.pub
     dst: ~/.ssh/id_github.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_id_rsa.pub:
     src: ssh/id_rsa.pub
     dst: ~/.ssh/id_rsa.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_ssh_config:
     src: ssh/config
     dst: ~/.ssh/config
