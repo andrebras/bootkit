@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../lib/import_gpg'
+require_relative '../lib/config_manager'
+require_relative '../lib/gpg_manager'
 
 # Import GPG Key from 1Password
 #
@@ -11,4 +12,4 @@ require_relative '../lib/import_gpg'
 #
 # Usage:
 #   ./bin/import_gpg
-BootKit::ImportGpg.new.run if $PROGRAM_NAME == __FILE__
+BootKit::GpgManager.new(BootKit::ConfigManager.new).setup if $PROGRAM_NAME == __FILE__
