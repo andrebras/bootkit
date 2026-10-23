@@ -17,3 +17,5 @@ Thumbs.db
 
 # RubyMine
 .idea/
+
+**/.claude/settings.local.json
