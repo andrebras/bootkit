@@ -45,15 +45,35 @@ module BootKit
       @system_manager.setup
       @brew_manager.setup
       @onepassword_manager.setup
-      @gpg_manager.setup
-      @dotfile_manager.setup
-      @zgenom_manager.setup
+      failed = failed_steps
       setup_bootkit_cli
 
-      logger.info('Installation completed successfully!')
+      report_result(failed)
     end
 
     private
+
+    # Runs the steps that return nil on failure and collects the failed ones
+    #
+    # @return [Array<String>] names of the steps that failed
+    def failed_steps
+      {
+        'GPG import' => @gpg_manager,
+        'Dotfiles' => @dotfile_manager,
+        'Zgenom' => @zgenom_manager
+      }.filter_map { |name, manager| name if manager.setup.nil? }
+    end
+
+    # Logs the installation outcome and exits non-zero if any step failed
+    #
+    # @param failed [Array<String>] names of the steps that failed
+    # @return [void]
+    def report_result(failed)
+      return logger.info('Installation completed successfully!') if failed.empty?
+
+      logger.error("Installation finished with failed steps: #{failed.join(', ')}")
+      exit(1)
+    end
 
     def setup_bootkit_cli
       local_bin = File.expand_path('~/.local/bin')
