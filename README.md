@@ -19,9 +19,8 @@ A secure, reproducible developer environment bootstrapper for macOS.
 - [Daily Use](#daily-use)
 - [Configuration Files](#configuration-files)
 - [Dotdrop Management](#dotdrop-management)
-- [GPG Key Setup with 1Password](#gpg-key-setup-with-1password)
+- [1Password Setup](#1password-setup)
 - [Directory Structure](#directory-structure)
-- [Troubleshooting](#troubleshooting)
 - [License](#license)
 
 ## Quick Start
@@ -45,13 +44,15 @@ After init:
 
 ### Deploying to a new machine
 
+First install the 1Password app, sign in, and turn on its SSH agent (see [1Password Setup](#1password-setup)). Then:
+
 ```bash
 git clone <your-bootkit-repo> ~/BootKit
 cd ~/BootKit
 ./bin/install
 ```
 
-`./bin/install` installs Homebrew packages, imports your GPG key from 1Password, deploys dotfiles, and sets up Zsh plugins. It's idempotent — safe to run multiple times.
+`./bin/install` installs Homebrew packages, deploys dotfiles, and sets up Zsh plugins. It's idempotent — safe to run multiple times.
 
 ## Daily Use
 
@@ -83,23 +84,18 @@ Your personal runtime config. Created by `./bin/init`. **Never commit this file*
 ```yaml
 logging:
   level: info
-onepassword:
-  vault: Dotfiles
-  gpg_key_path: GPG Key/notes
-gpg:
-  key_id: ~               # optional — set if you want to skip auto-detection
 dotdrop:
   profile: YOUR-HOSTNAME
 ```
 
 ### `config.yaml`
-Dotdrop configuration. Maps dotfiles in `dotfiles/` to their destinations on disk. Also defines GPG encryption/decryption transformations for sensitive files.
+Dotdrop configuration. Maps dotfiles in `dotfiles/` to their destinations on disk.
 
 ### `Brewfile`
 Defines all packages, casks, and fonts to install via Homebrew.
 
 ### `dotfiles/`
-Your actual config files. Sensitive files are stored GPG-encrypted. SSH private keys are not stored here: they live in 1Password and are served by the 1Password SSH agent.
+Your actual config files, stored as plain text. No secrets are kept here: SSH private keys live in 1Password and are served by the 1Password SSH agent.
 
 ## Dotdrop Management
 
@@ -110,7 +106,6 @@ BootKit uses [Dotdrop](https://github.com/deadc0de6/dotdrop) under the hood. The
 If you need dotdrop directly:
 
 ```sh
-export GPG_KEY_ID=$(grep 'key_id:' bootkit.yml | awk '{print $2}')
 PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','profile')")
 ```
 
@@ -125,19 +120,13 @@ PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','prof
 
 → [Full dotdrop documentation](https://dotdrop.readthedocs.io/en/latest/)
 
-## GPG Key Setup with 1Password
+## 1Password Setup
 
-BootKit retrieves your GPG private key from 1Password at install time.
+BootKit keeps no secrets. SSH keys live in 1Password, and the 1Password SSH agent serves them for SSH logins and for signing Git commits.
 
-1. Export your private key:
-   ```bash
-   gpg --export-secret-keys -a YOUR_KEY_ID > private.key
-   ```
-
-2. Save it to a 1Password Secure Note:
-   - Vault: matches `onepassword.vault` in your `bootkit.yml`
-   - Title/path: matches `onepassword.gpg_key_path`
-   - Store the key in the `notes` field
+1. Install the 1Password app (it is in the `Brewfile`) and sign in.
+2. In 1Password, go to Settings → Developer and turn on **Use the SSH agent**.
+3. Commits are signed with an SSH key from 1Password: `gitconfig` sets `gpg.format = ssh` and uses 1Password's `op-ssh-sign`, and `~/.ssh/allowed_signers` lets Git verify those signatures.
 
 ## Directory Structure
 
@@ -147,29 +136,13 @@ BootKit/
 │   ├── bootkit     # Daily-use CLI (diff, save, restore, add, list, install)
 │   ├── init        # First-time setup wizard (destructive — wipes dotfiles/)
 │   └── install     # Full machine setup orchestrator
-├── lib/            # Ruby modules (Homebrew, GPG, dotdrop, 1Password, etc.)
-├── dotfiles/       # Your config files (some GPG-encrypted)
+├── lib/            # Ruby modules (Homebrew, dotdrop, Zgenom, etc.)
+├── dotfiles/       # Your config files
 ├── Brewfile        # Homebrew packages and casks
 ├── config.yaml     # Dotdrop configuration
 ├── bootkit.yml     # Your personal config (gitignored)
 └── bootkit.example.yml
 ```
-
-## Troubleshooting
-
-### `dotdrop compare` fails with "No pinentry" error
-
-```
-gpg: public key decryption failed: No pinentry
-```
-
-Restart the GPG agent:
-
-```bash
-gpgconf --kill gpg-agent && gpg-agent --daemon
-```
-
-This happens after updating GPG, pinentry-mac, or `~/.gnupg/gpg-agent.conf`.
 
 ## License
 
@@ -180,5 +153,4 @@ MIT — see LICENSE file.
 - [Homebrew](https://brew.sh/)
 - [Dotdrop](https://github.com/deadc0de6/dotdrop)
 - [zgenom](https://github.com/jandamm/zgenom)
-- [GPG](https://gnupg.org/)
-- [1Password CLI](https://1password.com/downloads/command-line/)
+- [1Password SSH agent](https://developer.1password.com/docs/ssh/)
