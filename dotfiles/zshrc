@@ -1,6 +1,3 @@
-# set gpg tty to the current terminal
-export GPG_TTY=$(tty)
-
 #
 # Paths
 #
