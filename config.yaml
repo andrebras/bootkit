@@ -56,26 +56,9 @@ dotfiles:
     dst: ~/.tmux.conf
     actions:
     - tmux_tpm_install
-  f_config:
-    src: aws/config
-    dst: ~/.aws/config
-    trans_install: _decrypt
-    trans_update: _encrypt
-  f_credentials:
-    src: aws/credentials
-    dst: ~/.aws/credentials
-    chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_zprofile:
     src: zprofile
     dst: ~/.zprofile
-  f_vault_pass:
-    src: vault_pass
-    dst: ~/.vault_pass
-    chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_circleci_rsa.pub:
     src: ssh/circleci_rsa.pub
     dst: ~/.ssh/circleci_rsa.pub
@@ -163,10 +146,7 @@ profiles:
     - f_p10k.zsh
     - f_taskrc
     - f_tmux.conf
-    - f_config
-    - f_credentials
     - f_zprofile
-    - f_vault_pass
     - f_circleci_rsa.pub
     - f_id_github.pub
     - f_id_rsa_circleci.pub
