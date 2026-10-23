@@ -8,21 +8,20 @@ class TestInstaller < Minitest::Test
   include TestHelpers
 
   def setup
-    # Skip #initialize so no real config, brew, 1Password or gpg is touched
+    # Skip #initialize so no real config, brew or dotdrop is touched
     @installer = BootKit::Installer.allocate
     @installer.logger.level = Logger::FATAL
     @installer.define_singleton_method(:setup_bootkit_cli) { nil }
-    %i[system brew onepassword].each { |name| stub_manager(name, true) }
+    %i[system brew].each { |name| stub_manager(name, true) }
   end
 
   def test_run_succeeds_when_all_steps_succeed
-    %i[gpg dotfile zgenom].each { |name| stub_manager(name, 'ok') }
+    %i[dotfile zgenom].each { |name| stub_manager(name, 'ok') }
 
     @installer.run
   end
 
   def test_run_exits_when_a_step_fails
-    stub_manager(:gpg, 'ok')
     stub_manager(:dotfile, nil)
     stub_manager(:zgenom, 'ok')
 
@@ -31,7 +30,7 @@ class TestInstaller < Minitest::Test
   end
 
   def test_run_changes_to_repo_root
-    %i[gpg dotfile zgenom].each { |name| stub_manager(name, 'ok') }
+    %i[dotfile zgenom].each { |name| stub_manager(name, 'ok') }
 
     Dir.chdir(Dir.tmpdir) do
       @installer.run
@@ -45,11 +44,10 @@ class TestInstaller < Minitest::Test
   end
 
   def test_failed_steps_lists_every_failure
-    stub_manager(:gpg, nil)
-    stub_manager(:dotfile, 'ok')
+    stub_manager(:dotfile, nil)
     stub_manager(:zgenom, nil)
 
-    assert_equal ['GPG import', 'Zgenom'], @installer.send(:failed_steps)
+    assert_equal %w[Dotfiles Zgenom], @installer.send(:failed_steps)
   end
 
   private

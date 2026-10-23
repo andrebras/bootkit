@@ -8,8 +8,8 @@ require_relative '../lib/installer'
 # This script sets up a macOS development environment by:
 # - Installing Homebrew if not already installed
 # - Installing packages defined in Brewfile
-# - Setting up GPG keys from 1Password
-# - Making scripts executable
+# - Installing dotfiles with dotdrop
+# - Setting up Zgenom and the bootkit CLI
 #
 # Usage:
 #   ./bin/install

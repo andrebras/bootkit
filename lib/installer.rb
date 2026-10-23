@@ -6,8 +6,6 @@ require_relative 'bootkit_helpers'
 require_relative 'config_manager'
 require_relative 'system_manager'
 require_relative 'brew_manager'
-require_relative 'onepassword_manager'
-require_relative 'gpg_manager'
 require_relative 'dotfile_manager'
 require_relative 'zgenom_manager'
 
@@ -23,13 +21,11 @@ module BootKit
     #
     # @return [void]
     def initialize
-      @config_manager      = ConfigManager.new
-      @gpg_manager         = GpgManager.new(@config_manager)
-      @dotfile_manager     = DotfileManager.new(@config_manager, @gpg_manager)
-      @system_manager      = SystemManager.new
-      @brew_manager        = BrewManager.new
-      @zgenom_manager      = ZgenomManager.new
-      @onepassword_manager = OnePasswordManager.new
+      @config_manager  = ConfigManager.new
+      @dotfile_manager = DotfileManager.new(@config_manager)
+      @system_manager  = SystemManager.new
+      @brew_manager    = BrewManager.new
+      @zgenom_manager  = ZgenomManager.new
       configure_logging
     end
 
@@ -38,8 +34,6 @@ module BootKit
     # Executes all installation steps in sequence:
     # - Verifies macOS environment
     # - Installs Homebrew package manager and packages
-    # - Sets up 1Password CLI
-    # - Sets up GPG keys from 1Password
     # - Sets up dotdrop for dotfile management
     # - Sets up Zgenom for Zsh plugin management
     #
@@ -48,7 +42,6 @@ module BootKit
       Dir.chdir(ROOT_DIR)
       @system_manager.setup
       @brew_manager.setup
-      @onepassword_manager.setup
       failed = failed_steps
       setup_bootkit_cli
 
@@ -62,7 +55,6 @@ module BootKit
     # @return [Array<String>] names of the steps that failed
     def failed_steps
       {
-        'GPG import' => @gpg_manager,
         'Dotfiles' => @dotfile_manager,
         'Zgenom' => @zgenom_manager
       }.filter_map { |name, manager| name if manager.setup.nil? }
@@ -98,8 +90,8 @@ module BootKit
 
     def configure_logging
       log_level = @config_manager.get('logging', 'level', default: 'info')
-      [@system_manager, @brew_manager, @onepassword_manager, @zgenom_manager,
-       @gpg_manager, @dotfile_manager, self].each { |m| m.logger(log_level) }
+      [@system_manager, @brew_manager, @zgenom_manager,
+       @dotfile_manager, self].each { |m| m.logger(log_level) }
     end
   end
 end
