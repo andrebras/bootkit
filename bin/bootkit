@@ -9,11 +9,11 @@ export GPG_KEY_ID
 PROFILE=$(ruby -ryaml -e "puts YAML.load_file('bootkit.yml').dig('dotdrop','profile')")
 
 get_key() {
-  ruby -ryaml -e "
-c = YAML.load_file('config.yaml')
-m = c['dotfiles'].find { |k,v| File.expand_path(v['dst'].to_s) == File.expand_path('$1') }
-puts m ? m[0] : (STDERR.puts 'Not managed: $1'; exit 1)
-"
+  ruby -ryaml -e '
+c = YAML.load_file("config.yaml")
+m = c["dotfiles"].find { |k,v| File.expand_path(v["dst"].to_s) == File.expand_path(ARGV[0]) }
+puts m ? m[0] : (STDERR.puts "Not managed: #{ARGV[0]}"; exit 1)
+' "$1"
 }
 
 CMD="$1"; shift || true
@@ -44,7 +44,7 @@ case "$CMD" in
     dotdrop files -p "$PROFILE" -c config.yaml ;;
   remove)
     KEY=$(get_key "$1")
-    SRC=$(ruby -ryaml -e "puts YAML.load_file('config.yaml').dig('dotfiles', '$KEY', 'src')")
+    SRC=$(ruby -ryaml -e 'puts YAML.load_file("config.yaml").dig("dotfiles", ARGV[0], "src")' "$KEY")
     dotdrop remove -f -p "$PROFILE" -c config.yaml "$1"
     rm -f "$BOOTKIT_DIR/dotfiles/$SRC" ;;
   *)
