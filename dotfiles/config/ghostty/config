@@ -18,7 +18,9 @@ cursor-style = block
 cursor-style-blink = true
 
 # Prevent shell integration from changing the cursor shape.
-shell-integration-features = no-cursor
+# ssh-terminfo copies Ghostty's terminal definition to SSH hosts;
+# ssh-env falls back to xterm-256color where that is not possible.
+shell-integration-features = no-cursor,ssh-terminfo,ssh-env
 
 # Ghostty does not allow configuring cursor blink rate or easing.
 
