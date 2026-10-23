@@ -93,6 +93,7 @@ cask 'google-chrome'
 cask 'bruno' # API client (Postman alternative)
 cask 'dbeaver-community'
 cask 'docker-desktop'
+cask 'ghostty'
 cask 'github'
 cask 'ngrok'
 cask 'visual-studio-code'
