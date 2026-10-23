@@ -15,11 +15,6 @@ export VISUAL='vim'
 export PAGER='less'
 
 #
-# GPG
-#
-export GPG_KEY_ID=E7CFA32A
-
-#
 # Tools
 #
 export BAT_THEME="Catppuccin Mocha"

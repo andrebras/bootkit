@@ -47,7 +47,6 @@ if ! zgenom saved; then
   zgenom prezto command-not-found
   zgenom prezto completion
   zgenom prezto git
-  zgenom prezto gpg
   zgenom prezto history-substring-search
   zgenom prezto osx
   zgenom prezto ruby
