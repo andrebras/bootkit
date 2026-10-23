@@ -30,6 +30,20 @@ class TestInstaller < Minitest::Test
     assert_equal 1, error.status
   end
 
+  def test_run_changes_to_repo_root
+    %i[gpg dotfile zgenom].each { |name| stub_manager(name, 'ok') }
+
+    Dir.chdir(Dir.tmpdir) do
+      @installer.run
+
+      assert_equal File.realpath(BootKit::Installer::ROOT_DIR), File.realpath(Dir.pwd)
+    end
+  end
+
+  def test_root_dir_holds_bootkit_cli
+    assert File.executable?(File.join(BootKit::Installer::ROOT_DIR, 'bin', 'bootkit'))
+  end
+
   def test_failed_steps_lists_every_failure
     stub_manager(:gpg, nil)
     stub_manager(:dotfile, 'ok')
