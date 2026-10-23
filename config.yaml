@@ -115,6 +115,9 @@ dotfiles:
   f_gitconfig:
     src: gitconfig
     dst: ~/.gitconfig
+  f_allowed_signers:
+    src: ssh/allowed_signers
+    dst: ~/.ssh/allowed_signers
   f_tool-versions:
     src: tool-versions
     dst: ~/.tool-versions
@@ -156,6 +159,7 @@ profiles:
     - f_gpg.conf
     - f_zshenv
     - f_gitconfig
+    - f_allowed_signers
     - f_tool-versions
     - f_wezterm.lua
     - f_ghostty_config
