@@ -7,17 +7,11 @@ config:
   link_dotfile_default: nolink
   link_on_import: nolink
   longkey: false
-variables:
-  keyid: "{{@@ env['GPG_KEY_ID'] @@}}"
 actions:
   vim_plug_install: curl -fLo ~/.vim/autoload/plug.vim --create-dirs 
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   tmux_tpm_install: mkdir -p ~/.tmux/plugins && git clone 
     https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-trans_install:
-  _decrypt: gpg -q --for-your-eyes-only --no-tty -d {0} > {1}
-trans_update:
-  _encrypt: gpg -q -r {{@@ keyid @@}} --armor --no-tty -o {1} -e {0}
 dotfiles:
   f_vimrc:
     src: vimrc
@@ -56,33 +50,15 @@ dotfiles:
   f_zprofile:
     src: zprofile
     dst: ~/.zprofile
-  f_circleci_rsa.pub:
-    src: ssh/circleci_rsa.pub
-    dst: ~/.ssh/circleci_rsa.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_id_github.pub:
     src: ssh/id_github.pub
     dst: ~/.ssh/id_github.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
-  f_id_rsa_circleci.pub:
-    src: ssh/id_rsa_circleci.pub
-    dst: ~/.ssh/id_rsa_circleci.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_id_rsa.pub:
     src: ssh/id_rsa.pub
     dst: ~/.ssh/id_rsa.pub
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_ssh_config:
     src: ssh/config
     dst: ~/.ssh/config
-    chmod: '600'
-  f_gpg-agent.conf:
-    src: gnupg/gpg-agent.conf
-    dst: ~/.gnupg/gpg-agent.conf
     chmod: '600'
   d_alias:
     src: config/alias
@@ -103,20 +79,15 @@ dotfiles:
   d_nvim:
     src: config/nvim
     dst: ~/.config/nvim
-  f_gpg.conf:
-    src: gnupg/gpg.conf
-    dst: ~/.gnupg/gpg.conf
-    chmod: '600'
-    trans_install: _decrypt
-    trans_update: _encrypt
   f_zshenv:
     src: zshenv
     dst: ~/.zshenv
   f_gitconfig:
     src: gitconfig
     dst: ~/.gitconfig
-    trans_install: _decrypt
-    trans_update: _encrypt
+  f_allowed_signers:
+    src: ssh/allowed_signers
+    dst: ~/.ssh/allowed_signers
   f_tool-versions:
     src: tool-versions
     dst: ~/.tool-versions
@@ -143,21 +114,18 @@ profiles:
     - f_taskrc
     - f_tmux.conf
     - f_zprofile
-    - f_circleci_rsa.pub
     - f_id_github.pub
-    - f_id_rsa_circleci.pub
     - f_id_rsa.pub
     - f_ssh_config
-    - f_gpg-agent.conf
     - d_alias
     - d_direnv
     - f_karabiner.json
     - f_1683048690.json
     - f_1683049260.json
     - d_nvim
-    - f_gpg.conf
     - f_zshenv
     - f_gitconfig
+    - f_allowed_signers
     - f_tool-versions
     - f_wezterm.lua
     - f_ghostty_config

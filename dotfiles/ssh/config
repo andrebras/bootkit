@@ -1,3 +1,5 @@
+# Work and other private hosts live in ~/.ssh/config.d/ (not tracked by BootKit).
+# Copy those files by hand on a new machine.
 Include config.d/*
 
 # 1Password SSH agent - manages SSH keys for all hosts

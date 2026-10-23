@@ -1,26 +1,93 @@
------BEGIN PGP MESSAGE-----
+[user]
+  name = André Brás
+  email = andrebras@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG5JeHPf5DVaL09SSsa5mMWhSbBSop4GHaLufzyNko4
 
-hQEMA7JuHx9yJy8VAQf9GtbEfnxFb56m5hhfq06PvgqCG0Wt/l6UjkMqyMriiiOH
-KjLKZ30iNpAtwMRvSq7LzZz7n8twk2q/8muUkhL5+pO5et2aXa4wLWbUZ4D5KeGj
-9k6dO9MX5uYikdGrw7wCyTKCUGwZ3YH/DGhqTxN5nLO7K2UYYKxjhPKu/ow80luf
-zIKCWr3xwT4I+G6UGFMLG03jtpcPErmA/TW1L+eovN77PKFh3hQVb65YSezQoAOk
-Drfwx4OdEM9WYttyroptaKk2ZchHCZcag1XICIbIcgLQz+BZJFzW2MpsmlmTeKxW
-Paky+KtEJTwwsZNUk+l8iapyz4EQFQpTSCI/9UksgtLpAQ0b3jGCN9Uhjona5TgG
-CGuRs8HfwFzh4uD8WCdA/CPyXezpqNQPhHXyPZ7mJLVwOZqRNHeiWZyNwCWIjUtm
-2l8SfO42cNaLy7kKotP2N/jlL0BXIeCU8h3W9Uu3ERYHfklkAtqVfYAldWUTZmwK
-k5evFZhlyrmxcRKnoeJthraGzjc8vwaMtsqpdSEbVGCGz+dyfS10nvEioxxWPFf8
-tOsxEDJQt/Fwp+u1Qdl38+G/T9Y40UfYLvYaaGYoVexTV2zjFXwyG994Lrd6E47Q
-FqxfPArDIWP/fim7cIjoEadU7K6DXu8HJQZNrJVIYCD9jJGgutx05xPemY5B3r8L
-pFfdzQecfjg4RIFaK+6IoWhK7ikalIhhbrTdKdM8bRxqksoYVHeXoOlDVZv2kllC
-iWekmAEQ1T6jSGpeW2eRI3JglxM/LsPA3SR/mAZT/xCXr91CoWfi9U1gYl6aNIls
-VoxURlBf71YfTY/yPyaothEX9X5GqukMrNFDnBJvnUZJ2RFk+N6lrD7wS0QdxIYJ
-mVcdAkIW0a6Y4NZoaN/H0hDqEpDs8AAGsb+HnYv+arnm2rB4f9L6OLFuggb3snlA
-U4xAGKu0cyNaRBl1hFN4mLc7GJSOyq/+49tMNJYYqCvCVGFHjuW3Yqr3+nuX6Ofc
-zeJZB3bohhsBl9z4eMN7wsjAJZwBtXgQbdenzde+QQ5U3qM5M4c+vzwFeyMB3e4g
-7zst3CTbaySLwBSJdIQ3Vne2eExmipuj4ifijm3VQX568xt9VOqyLObtas9JcEoQ
-kTW2GI7xu8xb4HBFt0Us3wyj5ZMKIQuHu/UPHBFsee7H8g4NGwnYNXibGeSCYUfy
-CX7AbheFwrRtll5cgBzOApZeqDp4LH1urDfT19173VprHuPV+pLnmritJfXDHi1q
-ONk69w9SxFMn5QXH5ue6vCrKa/z0t+hb5LFFwsTF+ykzkeXUQxzkkZMuNptw6dCF
-pfzgtIBzJYk=
-=yiYk
------END PGP MESSAGE-----
+[core]
+  excludesfile = /Users/andrebras/.gitignore_global
+  autocrlf = input
+  safecrlf = true
+  editor = vim
+  quotepath = false
+  pager = diff-so-fancy | less --tabs=4 -RF
+  ; commentchar = !
+  ; editor = code --new-window --disable-extensions --wait
+
+[init]
+  defaultBranch = main
+[commit]
+	gpgsign = true
+
+[pull]
+  rebase = merges
+
+[fetch]
+  prune = true
+
+[merge]
+  tool = opendiff
+
+[diff]
+  tool = opendiff
+
+[mergetool]
+  prompt     = false
+  keepBackup = false
+  ; trustExitCode = true
+
+[mergetool "opendiff"]
+  cmd = opendiff $LOCAL $REMOTE -merge $MERGED
+
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
+
+[difftool]
+  prompt = false
+
+[difftool "opendiff"]
+  cmd = opendiff "$LOCAL" "$REMOTE"
+
+[filter "media"]
+  required = true
+  clean    = git media clean %f
+  smudge   = git media smudge %f
+
+[filter "lfs"]
+  process  = git-lfs filter-process
+  required = true
+  clean    = git-lfs clean -- %f
+  mudge    = git-lfs smudge -- %f
+  smudge   = git-lfs smudge -- %f
+
+[color]
+  diff   = auto
+  status = auto
+  branch = auto
+  ui     = auto
+
+[rerere]
+  enabled = true
+
+[column]
+  ui = auto
+
+[branch]
+  sort = -committerdate
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[alias]
+  switchback = switch -
+  sb = switchback
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedSignersFile = ~/.ssh/allowed_signers
+
+# Machine-specific settings live in ~/.gitconfig.local (not tracked by BootKit).
+# Create it by hand on a new machine, e.g. for background maintenance:
+#   git maintenance register --config-file ~/.gitconfig.local
+[include]
+	path = ~/.gitconfig.local

@@ -1,6 +1,3 @@
-# set gpg tty to the current terminal
-export GPG_TTY=$(tty)
-
 #
 # Paths
 #
@@ -47,7 +44,6 @@ if ! zgenom saved; then
   zgenom prezto command-not-found
   zgenom prezto completion
   zgenom prezto git
-  zgenom prezto gpg
   zgenom prezto history-substring-search
   zgenom prezto osx
   zgenom prezto ruby
