@@ -45,9 +45,6 @@ dotfiles:
   f_overcommit.yml:
     src: overcommit.yml
     dst: ~/.overcommit.yml
-  f_p10k.zsh:
-    src: p10k.zsh
-    dst: ~/.p10k.zsh
   f_taskrc:
     src: taskrc
     dst: ~/.taskrc
@@ -162,7 +159,6 @@ profiles:
     - f_gemrc
     - f_gitignore_global
     - f_overcommit.yml
-    - f_p10k.zsh
     - f_taskrc
     - f_tmux.conf
     - f_config
